@@ -3,7 +3,7 @@ from accounts.models import Customer,Vendor,Store_owner
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=150,blank=False,null=False)
-    upper_category = models.ForeignKey('self',on_delete=models.CASCADE)
+    upper_category = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
 
 class Product(models.Model):
     name = models.CharField(max_length=150,blank=False,null=False)
