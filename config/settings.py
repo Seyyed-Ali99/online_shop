@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'orders',
     'vendors',
     'website',
+    'admin_panel',
+    'product',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = ['core.backends.EmailBackend']
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

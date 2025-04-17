@@ -1,0 +1,21 @@
+from django.db import models
+from accounts.models import User
+
+# Create your models here.
+class Category(models.Model):
+    name = models.CharField(max_length=150,blank=False,null=False)
+    upper_category = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
+
+class Product(models.Model):
+    name = models.CharField(max_length=150,blank=False,null=False)
+    date_of_product = models.DateField(auto_now=True)
+    image = models.FileField()
+    category = models.ForeignKey(Category,on_delete=models.DO_NOTHING)
+    amount = models.IntegerField(blank=False,null=False)
+    store = models.ManyToManyField(User,related_name="Product")
+    price = models.DecimalField(max_digits=10,decimal_places=2)
+
+class Comment(models.Model):
+    title = models.CharField(max_length=150,blank=False,null=False)
+    comment_body = models.TextField()
+    related_product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=False,null=False)
