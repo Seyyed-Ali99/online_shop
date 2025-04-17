@@ -78,7 +78,7 @@ class DashboardCustomerView(View,LoginRequiredMixin):
         return render(request,"customer_dashboard.html",context=context)
     
 
-class DashboardCustomerView(View,LoginRequiredMixin):  
+class DashboardVendorView(View,LoginRequiredMixin):  
    
     def get(self,request,*args,**kwargs):
         user = User.objects.get(id=args)
@@ -92,7 +92,7 @@ class DashboardCustomerView(View,LoginRequiredMixin):
 
 
 
-class UpdateItemView(UpdateView,LoginRequiredMixin):  
+class UpdateUserView(UpdateView,LoginRequiredMixin):  
     model = User 
     form_class = UserRegisterForm  
     template_name = 'update_user.html'  
