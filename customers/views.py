@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse , HttpResponseBadRequest
+from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
 from accounts.models import User
 from product.models import Product
 from .forms import UserRegisterForm , LoginForm
-from django.contrib.auth.views import LoginView , LogoutView
+from django.contrib.auth.views import LogoutView , LoginView
 from django.views import View
 from django.contrib.auth import authenticate , login , logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,18 +13,8 @@ from django.contrib import messages
 
 # Create your views here.
 
-# def customer_panel(request,id):
-#     if request.method == "GET":
-#         # if request.user.role == "customer":
-#         user = User.objects.filter(id=id,role="customer")
-#         context = {"user":user}
 
-#     else : 
-#         return HttpResponse(" user not found !")
-
-#     return render(request,"",context=context)   
-
-class LoginView(View):  
+class CustomeLoginView(View):
     template_name = 'login.html'  
 
     def get(self, request):  
@@ -59,37 +49,28 @@ class RegisterView(View):
     def post(self,request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            form.save()
             messages.success(request, 'Registration successful. You can now log in.')  
 
             return redirect('login')
+        else :
+            return HttpResponseBadRequest()
+
         
 
-class DashboardCustomerView(View,LoginRequiredMixin):  
+class DashboardUserView(View,LoginRequiredMixin):
    
     def get(self,request,*args,**kwargs):
         user = User.objects.get(id=args)
         if user.role == "customer":
             context = {"user":user}
-
-        else :
-            return HttpResponseBadRequest()
-        
-        return render(request,"customer_dashboard.html",context=context)
-    
-
-class DashboardVendorView(View,LoginRequiredMixin):  
-   
-    def get(self,request,*args,**kwargs):
-        user = User.objects.get(id=args)
-        if user.role == "admin" or user.role=="manager" or user.role=="operator":
+            return render(request, "customer_dashboard.html", context=context)
+        elif user.role == "admin" or user.role=="manager" or user.role=="operator":
             context = {"user":user}
+            return render(request, "vendor_dashboard.html", context=context)
 
         else :
-            return HttpResponseBadRequest()
-        
-        return render(request,"vendor_dashboard.html",context=context)    
-
+            return HttpResponseForbidden()
 
 
 class UpdateUserView(UpdateView,LoginRequiredMixin):  
@@ -102,7 +83,7 @@ class UpdateUserView(UpdateView,LoginRequiredMixin):
         messages.success(self.request, 'Item successfully updated!')  
         return super().form_valid(form)
     
-class CustomLogoutView(LogoutView,LoginRequiredMixin):  
+class CustomLogoutView(LogoutView,LoginRequiredMixin):
     """Class-based Logout View with confirmation template."""  
     template_name = 'logout_confirm.html'  # Specify the same template for confirmation  
     next_page = 'home'    
