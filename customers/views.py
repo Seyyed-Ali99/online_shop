@@ -27,7 +27,7 @@ class CustomeLoginView(View):
         password = request.POST.get('password')  
         user = authenticate(request, email=email, password=password)  
 
-        if user is not None:  
+        if user:
             login(request, user)
             if user.role == "customer":  
                 return redirect('customer_dashboard') 
