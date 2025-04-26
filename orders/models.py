@@ -15,7 +15,14 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10,decimal_places=2)
     discount = models.IntegerField()
 
+class CartItem(models.Model):
+    product_id = models.ForeignKey(Product,on_delete=models.DO_NOTHING,default=None , related_name='CartItem')
+    amount = models.IntegerField(blank=False,null=False,default=1)
+    price = models.DecimalField(max_digits=10,decimal_places=2)
 
+class Cart(models.Model):
+    cart_item = models.ForeignKey(CartItem,on_delete=models.DO_NOTHING,default=None , related_name='Cart')
+    total_price = models.DecimalField(max_digits=10,decimal_places=2)
     
 
 

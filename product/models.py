@@ -19,3 +19,4 @@ class Comment(models.Model):
     title = models.CharField(max_length=150,blank=False,null=False)
     comment_body = models.TextField()
     related_product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=False,null=False)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,blank=False,null=False,default=None,related_name='Comment')

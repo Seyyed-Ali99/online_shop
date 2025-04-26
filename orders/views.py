@@ -49,7 +49,7 @@ class CartView(APIView):
 
 
 
-class OrderCreateView(View):
+class OrderCreateView(LoginRequiredMixin,View):
     def post(self, request):
         # Get the cart from session
         cart = request.session.get('cart', {})
@@ -74,14 +74,14 @@ class OrderCreateView(View):
         return JsonResponse({'order_id': order.id}, status=201)
 
 
-class OrderListView(View):
+class OrderListView(LoginRequiredMixin,View):
     def get(self, request):
         # Retrieve all orders for the current user (you might want to filter by user)
         orders = Order.objects.all()  # Change to filter orders by user if necessary
-        return render(request, 'order_list.html', {'orders': orders})
+        return render(request, 'orders_list.html', {'orders': orders})
 
 
-class OrderDetailView(View):
+class OrderDetailView(LoginRequiredMixin,View):
     def get(self, request, order_id):
         order = Order.objects.get(id=order_id)
         return render(request,"order_detail.html",context={'order': order})
@@ -97,9 +97,9 @@ class OrderDetailView(View):
 #         messages.success(self.request, 'Item successfully updated!')
 #         return super().form_valid(form)
 
-class OrderUpdateView(UpdateView):
+class OrderUpdateView(LoginRequiredMixin,UpdateView):
     model = Order
-    template_name = 'order_update.html'
+    template_name = 'update_order.html'
     fields = ["date_of_deliver","discount","address","orderitem_id"]  # Specify fields you want to be editable
     success_url = reverse_lazy('order_list')  # Redirect after update
 

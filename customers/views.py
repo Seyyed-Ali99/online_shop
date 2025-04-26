@@ -29,12 +29,8 @@ class CustomeLoginView(View):
 
         if user:
             login(request, user)
-            if user.role == "customer":  
-                return redirect('customer_dashboard') 
-            elif user.role == "admin":
-                return redirect('vendor_dashboard')
-            else :
-                return HttpResponseBadRequest()
+            return redirect('dashboard_user')
+
         else:  
             messages.error(request, 'Invalid email or password.')  
         return render(request, self.template_name, {'form': form})
@@ -64,16 +60,16 @@ class DashboardUserView(View,LoginRequiredMixin):
         user = User.objects.get(id=args)
         if user.role == "customer":
             context = {"user":user}
-            return render(request, "customer_dashboard.html", context=context)
+            return render(request, "dashboard_customer.html", context=context)
         elif user.role == "admin" or user.role=="manager" or user.role=="operator":
             context = {"user":user}
-            return render(request, "vendor_dashboard.html", context=context)
+            return render(request, "dashboard_vendor.html", context=context)
 
         else :
             return HttpResponseForbidden()
 
 
-class UpdateUserView(UpdateView,LoginRequiredMixin):  
+class UpdateUserView(LoginRequiredMixin,UpdateView):
     model = User 
     form_class = UserRegisterForm  
     template_name = 'update_user.html'  
@@ -85,7 +81,7 @@ class UpdateUserView(UpdateView,LoginRequiredMixin):
     
 class CustomLogoutView(LogoutView,LoginRequiredMixin):
     """Class-based Logout View with confirmation template."""  
-    template_name = 'logout_confirm.html'  # Specify the same template for confirmation  
+    template_name = 'logout.html'  # Specify the same template for confirmation
     next_page = 'home'    
 
     def post(self, request, *args, **kwargs):  

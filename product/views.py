@@ -29,7 +29,7 @@ class ProductList(View):
    
         products = Product.objects.all().order_by('-id')
         context = {"products":products}
-        return render
+        return render(request,'product_list.html',context)
 
 class ProductDetail(View):
     def get(self,request,*args,**kwargs):
