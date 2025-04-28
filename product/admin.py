@@ -3,14 +3,19 @@ from .models import Category , Product , Comment
 # Register your models here.
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id","name","upper_category")
+    list_filter = ("name","upper_category__name")
+    search_fields = ("name","upper_category__name")
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ("name","category","date_of_product","amount","price")
     list_filter = ("name","category","price","date_of_product")
+    search_fields = ("name","price","category__name")
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    pass    
+    list_display = ("title","related_product","user")
+    list_filter = ("related_product","user")
+    search_fields = ("related_product__name","user__username")
    
