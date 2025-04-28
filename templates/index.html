@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +73,7 @@ https://templatemo.com/tm-559-zay-shop
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
+                            <a class="nav-link" href="{% url 'home' %}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">About</a>
@@ -82,6 +83,12 @@ https://templatemo.com/tm-559-zay-shop
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'email_login' %}">Login</a>
                         </li>
                     </ul>
                 </div>
@@ -150,7 +157,7 @@ https://templatemo.com/tm-559-zay-shop
                                 <h1 class="h1 text-success"><b>Zay</b> eCommerce</h1>
                                 <h3 class="h2">Tiny and Perfect eCommerce Template</h3>
                                 <p>
-                                    Zay Shop is an eCommerce HTML5 CSS template with latest version of Bootstrap 5 (beta 1).
+                                    This is just a Beta version of Site
                                     This template is 100% free provided by <a rel="sponsored" class="text-success" href="https://templatemo.com" target="_blank">TemplateMo</a> website.
                                     Image credits go to <a rel="sponsored" class="text-success" href="https://stories.freepik.com/" target="_blank">Freepik Stories</a>,
                                     <a rel="sponsored" class="text-success" href="https://unsplash.com/" target="_blank">Unsplash</a> and
@@ -163,6 +170,7 @@ https://templatemo.com/tm-559-zay-shop
             </div>
             <div class="carousel-item">
                 <div class="container">
+
                     <div class="row p-5">
                         <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
 {#                            <img class="img-fluid" src="./assets/img/banner_img_02.jpg" alt="">#}
@@ -179,6 +187,7 @@ https://templatemo.com/tm-559-zay-shop
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="carousel-item">
@@ -213,6 +222,7 @@ https://templatemo.com/tm-559-zay-shop
 
 
     <!-- Start Categories of The Month -->
+    {% block content %}
     <section class="container py-5">
         <div class="row text-center pt-3">
             <div class="col-lg-6 m-auto">
@@ -241,6 +251,7 @@ https://templatemo.com/tm-559-zay-shop
             </div>
         </div>
     </section>
+    {% endblock %}
     <!-- End Categories of The Month -->
 
 
@@ -332,7 +343,7 @@ https://templatemo.com/tm-559-zay-shop
         </div>
     </section>
     <!-- End Featured Product -->
-
+{#content#}
 
     <!-- Start Footer -->
     <footer class="bg-dark" id="tempaltemo_footer">

@@ -4,14 +4,14 @@
 {#    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">#}
 {#    <link rel="stylesheet" href="{% static 'css/custom.css' %}">#}
 {% block title %}
-    Register
+    Email Login
 {% endblock %}
 {% block content  %}
-    <form method="post" action="{% url 'register' %}">
+    <form method="post" action="{% url 'email_login' %}">
 
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
     </form>
 
 {% endblock %}

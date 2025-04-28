@@ -11,14 +11,14 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=11,blank=False,null=False,unique=True)
     password = models.CharField(max_length=150,blank=False,null=False)
     role = models.CharField(max_length=50,blank=False,null=False,choices=ROLE_CHOICES,default='operator')
-    address = models.CharField(max_length=250,blank=False,null=False,default=None)
+    address = models.CharField(max_length=250)
 
 #   def __str__(self):
 #       return f"{self.username} | {self.email} | {self.role}"
 
     groups = models.ManyToManyField(
         Group,
-        verbose_name=("groups"),
+        verbose_name="groups",
         blank=True,
         help_text=(
             "The groups this user belongs to. A user will get all permissions "
@@ -30,9 +30,9 @@ class User(AbstractUser):
 
     user_permissions = models.ManyToManyField(
         Permission,
-        verbose_name=("customerpermissions"),
+        verbose_name="customerpermissions",
         blank=True,
-        help_text=("Specific permissions for this user."),
+        help_text="Specific permissions for this user.",
         related_name="CustomeUser_set",
         related_query_name="customer",
     )

@@ -6,7 +6,7 @@ class UserRegisterForm(forms.ModelForm):
         model = User
         fields = ["first_name","last_name","username","email","phone_number","password","role","address"]
 
-class LoginForm(forms.ModelForm):
+class EmailLoginForm(forms.ModelForm):
    # email = forms.EmailField(required=True)
    # password = forms.CharField(widget=forms.PasswordInput, required=True)
     class Meta:

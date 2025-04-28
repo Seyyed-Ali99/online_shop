@@ -18,7 +18,7 @@ class Shop(TemplateView):
     def get(self,request,*args,**kwargs):
         return render(request,self.template_name)
 
-class Shop_Single(TemplateView):
+class ShopSingle(TemplateView):
     template_name = "shop-single.html"
     def get(self,request,*args,**kwargs):
         return render(request,self.template_name)

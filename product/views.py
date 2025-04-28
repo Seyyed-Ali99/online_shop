@@ -1,4 +1,6 @@
 from django.shortcuts import render , redirect
+from unicodedata import category
+
 from .forms import CategoryForm , ProductForm , CommentForm
 from .models import Category , Product , Comment
 from django.http import HttpResponse , HttpResponseBadRequest
@@ -26,8 +28,10 @@ class AddProduct(View,LoginRequiredMixin):
 class ProductList(View):
     
     def get(self,request):
-   
-        products = Product.objects.all().order_by('-id')
+        category_id = request.query_params.get('category')
+
+        products = Product.objects.filter(category_id=int(category_id)).order_by('-id')
+        print(products.count())
         context = {"products":products}
         return render(request,'product_list.html',context)
 

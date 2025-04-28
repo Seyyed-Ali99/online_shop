@@ -49,7 +49,7 @@ class CartView(APIView):
 
 
 
-class OrderCreateView(LoginRequiredMixin,View):
+class OrderCreateView(APIView):
     def post(self, request):
         # Get the cart from session
         cart = request.session.get('cart', {})
@@ -65,7 +65,7 @@ class OrderCreateView(LoginRequiredMixin,View):
             try:
                 product = Product.objects.get(id=product_id)
                 OrderItem.objects.create(order=order, product=product, quantity=quantity)
-            except Product.DoesNotExist:
+            except:
                 continue  # Ignore if the product doesn't exist, or handle it accordingly
 
         # Clear the cart after creating an order
@@ -74,14 +74,14 @@ class OrderCreateView(LoginRequiredMixin,View):
         return JsonResponse({'order_id': order.id}, status=201)
 
 
-class OrderListView(LoginRequiredMixin,View):
+class OrderListView(APIView):
     def get(self, request):
         # Retrieve all orders for the current user (you might want to filter by user)
         orders = Order.objects.all()  # Change to filter orders by user if necessary
         return render(request, 'orders_list.html', {'orders': orders})
 
 
-class OrderDetailView(LoginRequiredMixin,View):
+class OrderDetailView(APIView):
     def get(self, request, order_id):
         order = Order.objects.get(id=order_id)
         return render(request,"order_detail.html",context={'order': order})
@@ -97,15 +97,15 @@ class OrderDetailView(LoginRequiredMixin,View):
 #         messages.success(self.request, 'Item successfully updated!')
 #         return super().form_valid(form)
 
-class OrderUpdateView(LoginRequiredMixin,UpdateView):
+class OrderUpdateView(APIView):
     model = Order
-    template_name = 'update_order.html'
+    template_name = 'order_update.html'
     fields = ["date_of_deliver","discount","address","orderitem_id"]  # Specify fields you want to be editable
     success_url = reverse_lazy('order_list')  # Redirect after update
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['order'] = self.object  # Add the order instance to the context
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['order'] = self.object  # Add the order instance to the context
+    #     return context
 
 
