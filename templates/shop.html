@@ -140,13 +140,13 @@ https://templatemo.com/tm-559-zay-shop
                 <ul class="list-unstyled templatemo-accordion">
                     <li class="pb-3">
 
-{#                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">#}
-{#                            Gender#}
-{#                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>#}
-{#                        </a>#}
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                            Gender
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
                         <ul class="collapse show list-unstyled pl-3">
                             {% for category in categories %}
-                            <li><a class="text-decoration-none" href="#">{{ category.name }}</a></li>
+                            <li><a class="text-decoration-none" href="/?q=">{{ category.name }}</a></li>
 {#                            <li><a class="text-decoration-none" href="#">Women</a></li>#}
                             {% endfor %}
                         </ul>
@@ -240,6 +240,24 @@ https://templatemo.com/tm-559-zay-shop
                         </div>
                     </div>
                     {% endfor %}
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        function addToCart(productId, quantity) {
+                            $.ajax({
+                                url: '/api/cart/',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ product_id: productId, quantity: quantity }),
+                                success: function(cart) {
+                                    console.log('Cart updated:', cart);
+                                    // Optionally update the UI with the new cart state
+                                },
+                                error: function(xhr) {
+                                    console.error('Error adding to cart:', xhr.responseText);
+                                }
+                            });
+                        }
+                    </script>
 {#                    <div class="col-md-4">#}
 {#                        <div class="card mb-4 product-wap rounded-0">#}
 {#                            <div class="card rounded-0">#}

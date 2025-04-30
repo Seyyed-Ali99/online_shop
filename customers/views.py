@@ -1,3 +1,5 @@
+# from django.contrib.auth.handlers.modwsgi import check_password
+from django.contrib.auth.hashers import check_password
 from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
 from accounts.models import User
@@ -27,20 +29,27 @@ class EmailLoginView(View):
 
     def post(self, request):
         form = EmailLoginForm(request.POST)
-        username = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        print(user)
+        # # print(form)
+        # # username = request.POST.get('email')
+        # username = "alihoseini"
+        # password = request.POST.get('password')
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            print(username, password)
+            print(check_password(password,encoded='pbkdf2_sha256$1000000$ED02ywjmAe81f9RK7sxK4d$mCn3tMDGT4fsHJye1pGKfJBWGe39iaxS+FHH2GdTTG8='))
+            user = authenticate( username=username, password=password)
+            print(user)
 
-        if user:
-            print(" user exists")
-            login(request, user)
-            return redirect('dashboard_user')
+            if user:
+                print(" user exists")
+                login(request, user)
+                return redirect('dashboard_user')
 
-        else:
-            messages.error(request, 'Invalid email or password.')
-            # print("no login")
-        return render(request, self.template_name, {'form': form})
+            else:
+                messages.error(request, 'Invalid email or password.')
+                # print("no login")
+            return render(request, self.template_name, {'form': form})
 
 class OTPLogin(View):
     template_name = 'otp_login.html'
@@ -79,7 +88,7 @@ class RegisterView(CreateView):
 class DashboardUserView(LoginRequiredMixin,View):
    
     def get(self,request,*args,**kwargs):
-        user = User.objects.get(id=kwargs['id'])
+        user = User.objects.get(id=request.user.id)
         if user.role == "customer":
             comments = Comment.objects.filter(user=user)
             context = {"user":user,"comments":comments}

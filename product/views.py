@@ -31,8 +31,8 @@ class ProductList(View):
         category_id = request.query_params.get('category')
 
         products = Product.objects.filter(category_id=int(category_id)).order_by('-id')
-        categories = Category.objects.all()
-        context = {"products":products,"categories":categories}
+        # categories = Category.objects.all()
+        context = {"products":products,"categories":category_id}
         return render(request,'shop.html',context)
 
 class ProductDetail(View):
