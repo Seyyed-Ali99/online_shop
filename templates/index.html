@@ -73,7 +73,7 @@ https://templatemo.com/tm-559-zay-shop
                 <div class="flex-fill">
                     <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home' %}">Home</a>
+                            <a class="nav-link" href="#">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">About</a>
@@ -139,6 +139,7 @@ https://templatemo.com/tm-559-zay-shop
 
 
     <!-- Start Banner Hero -->
+    {% block content %}
     <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
         <ol class="carousel-indicators">
             <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
@@ -222,7 +223,7 @@ https://templatemo.com/tm-559-zay-shop
 
 
     <!-- Start Categories of The Month -->
-    {% block content %}
+
     <section class="container py-5">
         <div class="row text-center pt-3">
             <div class="col-lg-6 m-auto">

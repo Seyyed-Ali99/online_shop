@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% block title %}
+    Dashboard Customer
+{% endblock %}
+{% block content  %}
+    {{ user.first_name }}
+    {{ user.last_name }}
+    {{ user.username }}
+    {{ user.email }}
+    {{ user.address }}
+    {{ user.phone_number }}
+    <a href="{% url 'update_user' %}"> update_user</a>
+    <a href="{% url 'logout' %}"> logout </a>
+    <a href="{% url 'comments_list' %}"> comments </a>
+{% endblock %}

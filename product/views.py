@@ -11,11 +11,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 
-class AddProduct(View,LoginRequiredMixin):
+class AddProduct(LoginRequiredMixin,View):
     
     def get(self,request):
         form = ProductForm()
-        return render(request,"",{"form":form})
+        return render(request,"add_product.html",{"form":form})
 
     def post(self,request):
         form = ProductForm(request.POST)
@@ -31,9 +31,9 @@ class ProductList(View):
         category_id = request.query_params.get('category')
 
         products = Product.objects.filter(category_id=int(category_id)).order_by('-id')
-        print(products.count())
-        context = {"products":products}
-        return render(request,'product_list.html',context)
+        categories = Category.objects.all()
+        context = {"products":products,"categories":categories}
+        return render(request,'shop.html',context)
 
 class ProductDetail(View):
     def get(self,request,*args,**kwargs):
@@ -41,7 +41,7 @@ class ProductDetail(View):
         context = {'product':product}
         return render(request,'',context=context)
 
-class ProductDelete(View,LoginRequiredMixin):
+class ProductDelete(LoginRequiredMixin,View):
     def get(self,request):
         pass
 
@@ -49,7 +49,7 @@ class ProductDelete(View,LoginRequiredMixin):
         pass
 
 
-class ProductUpdate(UpdateView,LoginRequiredMixin):
+class ProductUpdate(LoginRequiredMixin,UpdateView):
     model = Product 
     form_class = ProductForm  
     template_name = 'update_product.html'  
@@ -60,7 +60,7 @@ class ProductUpdate(UpdateView,LoginRequiredMixin):
         return super().form_valid(form)
     
 
-class AddCategory(View,LoginRequiredMixin):
+class AddCategory(LoginRequiredMixin,View):
     
     def get(self,request):
         form = CategoryForm()
@@ -75,7 +75,7 @@ class AddCategory(View,LoginRequiredMixin):
             return HttpResponseBadRequest()
 
 
-class CategoryDelete(View,LoginRequiredMixin):
+class CategoryDelete(LoginRequiredMixin,View):
     def get(self,request):
         pass
 
@@ -83,7 +83,7 @@ class CategoryDelete(View,LoginRequiredMixin):
         pass
 
 
-class CategoryUpdate(UpdateView,LoginRequiredMixin):
+class CategoryUpdate(LoginRequiredMixin,UpdateView):
     model = Category 
     form_class = CategoryForm  
     template_name = 'update_category.html'  
@@ -94,7 +94,7 @@ class CategoryUpdate(UpdateView,LoginRequiredMixin):
         return super().form_valid(form)
     
 
-class AddComment(View,LoginRequiredMixin):
+class AddComment(LoginRequiredMixin,View):
     
     def get(self,request):
         form = CommentForm()
@@ -118,7 +118,7 @@ class CommentList(View):
 class CommentDetail(View):
     pass
 
-class CommentDelete(View,LoginRequiredMixin):
+class CommentDelete(LoginRequiredMixin,View):
     def get(self,request):
         pass
 
@@ -126,7 +126,7 @@ class CommentDelete(View,LoginRequiredMixin):
         pass
 
 
-class CommentUpdate(UpdateView,LoginRequiredMixin):
+class CommentUpdate(LoginRequiredMixin,UpdateView):
     model = Comment 
     form_class = CommentForm  
     template_name = 'update_comment.html'  
