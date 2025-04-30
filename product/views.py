@@ -25,6 +25,12 @@ class AddProduct(LoginRequiredMixin,View):
         else :
             return HttpResponseBadRequest()
 
+class AllComment(LoginRequiredMixin,View):
+    def get(self,request):
+        product = Product.objects.get(store=request.user.id)
+        comments = Comment.objects.filter(product=product)
+        return render(request,"stores_comments.html",context={"comments":comments})
+
 class ProductList(View):
     
     def get(self,request):
@@ -38,7 +44,8 @@ class ProductList(View):
 class ProductDetail(View):
     def get(self,request,*args,**kwargs):
         product = Product.objects.get(id=args)
-        context = {'product':product}
+        comments = Comment.objects.filter(product=product)
+        context = {'product':product,'comments':comments}
         return render(request,'',context=context)
 
 class ProductDelete(LoginRequiredMixin,View):

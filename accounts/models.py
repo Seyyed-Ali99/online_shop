@@ -13,7 +13,8 @@ class User(AbstractUser):
     role = models.CharField(max_length=50,blank=False,null=False,choices=ROLE_CHOICES,default='operator')
     address = models.CharField(max_length=250)
 
-    # USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 #   def __str__(self):
 #       return f"{self.username} | {self.email} | {self.role}"
 
