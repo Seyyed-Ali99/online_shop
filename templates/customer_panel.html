@@ -7,13 +7,29 @@
     Dashboard Customer
 {% endblock %}
 {% block content  %}
-    {{ user.first_name }}
-    {{ user.last_name }}
-    {{ user.username }}
-    {{ user.email }}
-    {{ user.address }}
-    {{ user.phone_number }}
-    <a href="{% url 'update_user' %}"> update_user</a>
-    <a href="{% url 'logout' %}"> logout </a>
+
+    <section class="bg-success py-5">
+        <div class="container">
+            <div class="row align-items-center py-5">
+                <div class="col-md-5 text-white">
+                    <h1> Profile </h1>
+                    <p class="flex-column align-content-center">
+                        <span> /first_name :     {{ user.first_name }} </span>
+                        <span> /last_name :      {{ user.last_name }} </span>
+                        <span> /username :       {{ user.username }} </span>
+                        <span> /email :          {{ user.email }} </span>
+                        <span> /address :        {{ user.address }} </span>
+                        <span> /phone number :   {{ user.phone_number }} </span>
+                        <a href="{% url 'update_user' %}"> /update_user </a>
+                        <a href="{% url 'logout' %}"> /logout </a>
+
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <img src="{% static 'img/about-hero.svg' %}" alt="About Hero">
+                </div>
+            </div>
+        </div>
+    </section>
 {#    <a href="{% url 'comments_list' %}"> comments </a>#}
 {% endblock %}
