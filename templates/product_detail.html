@@ -1,12 +1,75 @@
+{% extends 'shop.html' %}
 {% load static %}
-{% extends 'index.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Product_detail</title>
+    <title>
+        {% block title %}
+            Product_detail
+        {% endblock %}
+    </title>
 </head>
 <body>
+    {% block content %}
+        <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <div class="card rounded-0">
+                                <img class="card-img rounded-0 img-fluid" src="{% static 'img/shop_01.jpg' %}">
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+                                        <li><i class="far fa-heart"></i></li>
+                                        <li><i class="far fa-eye"></i></li>
+                                        <li><i class="fas fa-cart-plus"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
 
+                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                    <li> {{ product.name }} </li>
+                                    <li class="pt-2">
+                                        <span>{{ product.category }}</span>
+                                        <span>{{ product.amount }}</span>
+                                        <span>{{ product.store.username }}</span>
+                                        <span>{{ product.date_of_product }}</span>
+
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">{{ product.price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        function addToCart(productId, quantity) {
+                            $.ajax({
+                                url: '{% url 'add_cart' %}',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ product_id: productId, quantity: quantity }),
+                                success: function(cart) {
+                                    console.log('Cart updated:', cart);
+                                    // Optionally update the UI with the new cart state
+                                },
+                                error: function(xhr) {
+                                    console.error('Error adding to cart:', xhr.responseText);
+                                }
+                            });
+                        }
+                    </script>
+        </div>
+    {% endblock %}
 </body>
 </html>

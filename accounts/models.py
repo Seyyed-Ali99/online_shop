@@ -11,6 +11,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=11,blank=False,null=False,unique=True)
     password = models.CharField(max_length=150,blank=False,null=False)
     role = models.CharField(max_length=50,blank=False,null=False,choices=ROLE_CHOICES,default='operator')
+    store = models.ForeignKey('self',on_delete=models.CASCADE,blank=True,null=True,default=1)
     address = models.CharField(max_length=250)
 
     USERNAME_FIELD = 'email'

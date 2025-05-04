@@ -1,10 +1,25 @@
+{% extends 'about.html' %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>
+        {% block title %}
+            Product Create
+        {% endblock %}
+    </title>
 </head>
 <body>
+
+        {% block content %}
+            <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit"> Create </button>
+            </form>
+        {% endblock %}
 
 </body>
 </html>

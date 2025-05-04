@@ -1,27 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product_list</title>
-</head>
-<body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            function addToCart(productId, quantity) {
-                $.ajax({
-                    url: '/api/cart/',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ product_id: productId, quantity: quantity }),
-                    success: function(cart) {
-                        console.log('Cart updated:', cart);
-                        // Optionally update the UI with the new cart state
-                    },
-                    error: function(xhr) {
-                        console.error('Error adding to cart:', xhr.responseText);
-                    }
-                });
-            }
-        </script>
-</body>
-</html>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Product_list</title>#}
+{#</head>#}
+{#<body>#}
+{#    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+{#        <script>#}
+{#            function addToCart(productId, quantity) {#}
+{#                $.ajax({#}
+{#                    url: '/api/cart/',#}
+{#                    type: 'POST',#}
+{#                    contentType: 'application/json',#}
+{#                    data: JSON.stringify({ product_id: productId, quantity: quantity }),#}
+{#                    success: function(cart) {#}
+{#                        console.log('Cart updated:', cart);#}
+{#                        // Optionally update the UI with the new cart state#}
+{#                    },#}
+{#                    error: function(xhr) {#}
+{#                        console.error('Error adding to cart:', xhr.responseText);#}
+{#                    }#}
+{#                });#}
+{#            }#}
+{#        </script>#}
+{#</body>#}
+{#</html>#}

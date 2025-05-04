@@ -1,7 +1,6 @@
 from django.shortcuts import render , redirect
 from unicodedata import category
-
-from .forms import CategoryForm , ProductForm , CommentForm
+from .forms import CategoryForm , ProductForm , CommentForm,RateForm
 from .models import Category , Product , Comment
 from django.http import HttpResponse , HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
@@ -18,10 +17,10 @@ class AddProduct(LoginRequiredMixin,View):
         return render(request,"add_product.html",{"form":form})
 
     def post(self,request):
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('all_products')
+            return redirect('shop')
         else :
             return HttpResponseBadRequest()
 
@@ -34,19 +33,26 @@ class AllComment(LoginRequiredMixin,View):
 class ProductList(View):
     
     def get(self,request):
-        category_id = request.query_params.get('category')
+        category_name = request.GET.get('category',None)
+        categories = Category.objects.all()
+        print(category_name)
 
-        products = Product.objects.filter(category_id=int(category_id)).order_by('-id')
-        # categories = Category.objects.all()
-        context = {"products":products,"categories":category_id}
+        if category_name :
+            products = Product.objects.filter(category__name=category_name)
+
+
+            # products = Product.objects.filter(category_id=int(category_id)).order_by('-id')
+            # categories = Category.objects.all()
+        else :
+            products = Product.objects.all().order_by('-id')
+        context = {"products":products,"categories":categories}
         return render(request,'shop.html',context)
-
 class ProductDetail(View):
     def get(self,request,*args,**kwargs):
-        product = Product.objects.get(id=args)
+        product = Product.objects.get(id=kwargs['id'])
         comments = Comment.objects.filter(product=product)
         context = {'product':product,'comments':comments}
-        return render(request,'',context=context)
+        return render(request,'product_detail.html',context=context)
 
 class ProductDelete(LoginRequiredMixin,View):
     def get(self,request):
@@ -62,9 +68,9 @@ class ProductUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'update_product.html'  
     success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update  
 
-    def form_valid(self, form):  
-        messages.success(self.request, 'Item successfully updated!')  
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     messages.success(self.request, 'Item successfully updated!')
+    #     return super().form_valid(form)
     
 
 class AddCategory(LoginRequiredMixin,View):
@@ -142,3 +148,18 @@ class CommentUpdate(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):  
         messages.success(self.request, 'Item successfully updated!')  
         return super().form_valid(form)
+
+
+class AddRate(LoginRequiredMixin,View):
+    def get(self,request,*args,**kwargs):
+        product = Product.objects.get(id=kwargs['id'])
+        rateform = RateForm()
+        return render(request,"shop-single.html",context={"rateform":rateform,"product":product})
+
+    def post(self,request):
+        rateform = RateForm(request.POST)
+        if rateform.is_valid():
+            rateform.save()
+            return redirect('order_detail')
+        else:
+            return HttpResponseBadRequest()

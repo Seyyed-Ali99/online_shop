@@ -94,8 +94,8 @@ class DashboardUserView(LoginRequiredMixin,View):
             context = {"user":user,"comments":comments}
             return render(request, "customer_panel.html", context=context)
         elif user.role == "admin" or user.role=="manager" or user.role=="operator":
-            product = Product.objects.filter(store=user)
-            context = {"user":user,"product":product}
+            store_products = Product.objects.filter(store=user)
+            context = {"user":user,"products":store_products}
             return render(request, "vendor_panel.html", context=context)
 
         else :

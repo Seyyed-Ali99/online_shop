@@ -7,7 +7,7 @@ urlpatterns = [
     path("add_comment/",AddComment.as_view(),name="add_comment"),
     path("all_comments/",AllComment.as_view(),name="all_comments"),
     path("edit_product/",ProductUpdate.as_view(),name="edit_product"),
-    path("all_products/",ProductList.as_view(),name="all_product"),
-    path("product/<int:id>",ProductDetail.as_view(),name="product_detail"),
-    path("product_delete/<int:id>",ProductDelete.as_view(),name="product_delete"),
+    path("shop/",ProductList.as_view(),name="shop"),
+    path("product/<int:id>/",ProductDetail.as_view(),name="product_detail"),
+    path("product_delete/<int:id>/",ProductDelete.as_view(),name="product_delete"),
 ]

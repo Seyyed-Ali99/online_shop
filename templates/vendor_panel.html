@@ -16,7 +16,12 @@
     <a href="{% url 'update_user' %}"> update_user</a>
     <a href="{% url 'logout' %}"> logout </a>
 {#    <a href="{% url %}"></a>#}
+    {% for product in products %}
+        {{ product.name }}
+        {{ product.price }}
+    {% endfor %}
     {% if user.role == 'admin' or user.role == 'manager' %}
         <a href="{% url 'add_product' %}"> create product</a>
+        <a href="{% url 'edit_product' %}"> Edit Product</a>
     {% endif %}
 {% endblock %}

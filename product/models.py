@@ -1,5 +1,10 @@
 from django.db import models
+from django.db.models import PositiveIntegerField
+
 from accounts.models import User
+
+
+# RATE_CHOICES = [("*","*"),("**","**"),("***","***"),("****","****"),("*****","*****")]
 
 # Create your models here.
 class Category(models.Model):
@@ -18,6 +23,7 @@ class Product(models.Model):
     store = models.ManyToManyField(User,related_name="Product")
     price = models.DecimalField(max_digits=10,decimal_places=2)
 
+
     def __str__(self):
         return f"{self.name} | {self.date_of_product} | {self.category.name} | {self.store.name} | {self.price}"
 
@@ -30,3 +36,11 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.title} | {self.related_product.name} | {self.user.username}"
+
+class Rate(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=False,null=False)
+    user = models.ForeignKey(User,on_delete=models.DO_NOTHING,blank=False,null=False)
+    rate = PositiveIntegerField(max_length=1,blank=False,null=False)
+
+    def __str__(self):
+        return f"{self.product} | {self.rate} | {self.user}"
