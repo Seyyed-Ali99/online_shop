@@ -18,17 +18,21 @@ class CartView(APIView):
         return JsonResponse(cart, safe=False)
 
     def post(self, request):
-        product_id = request.data.get('product_id')
-        quantity = request.data.get('quantity', 1)
-
+        product_id =str(request.data.get('product_id'))
+        print(type(product_id))
+        # quantity = request.data.get('quantity', 1)
+        quantity = 1
 
         cart = request.session.get('cart', {})
+        print(cart)
 
 
         if product_id in cart:
             cart[product_id] += quantity  # Increase quantity
+            print(cart)
         else:
             cart[product_id] = quantity  # Add new product
+            print(cart)
 
         # Save cart in session
         request.session['cart'] = cart

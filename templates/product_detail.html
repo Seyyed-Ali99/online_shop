@@ -17,12 +17,12 @@
                     <div class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
                             <div class="card rounded-0">
-                                <img class="card-img rounded-0 img-fluid" src="{% static 'img/shop_01.jpg' %}">
+                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
-                                        <li><i class="far fa-heart"></i></li>
-                                        <li><i class="far fa-eye"></i></li>
-                                        <li><i class="fas fa-cart-plus"></i></li>
+{#                                        <li><i class="far fa-heart"></i></li>#}
+{#                                        <li><i class="far fa-eye"></i></li>#}
+                                        <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>
                                     </ul>
                                 </div>
                             </div>
@@ -40,6 +40,7 @@
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
+                                        {{ rates }}
                                         <i class="text-warning fa fa-star"></i>
                                         <i class="text-warning fa fa-star"></i>
                                         <i class="text-warning fa fa-star"></i>
@@ -53,12 +54,16 @@
                     </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
-                        function addToCart(productId, quantity) {
+                        $(document).ready(function() {
+                            $('.list-unstyled li').on('click',function () {
                             $.ajax({
-                                url: '{% url 'add_cart' %}',
+                                url: '{% url 'cart' %}',
                                 type: 'POST',
                                 contentType: 'application/json',
-                                data: JSON.stringify({ product_id: productId, quantity: quantity }),
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                    },
+                                data: JSON.stringify({ product_id: {{ product.id }} }),
                                 success: function(cart) {
                                     console.log('Cart updated:', cart);
                                     // Optionally update the UI with the new cart state
@@ -68,6 +73,8 @@
                                 }
                             });
                         }
+                            );
+                        });
                     </script>
         </div>
     {% endblock %}

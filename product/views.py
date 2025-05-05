@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from unicodedata import category
 from .forms import CategoryForm , ProductForm , CommentForm,RateForm
-from .models import Category , Product , Comment
+from .models import Category , Product , Comment,Rate
 from django.http import HttpResponse , HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.views import View
@@ -50,8 +50,17 @@ class ProductList(View):
 class ProductDetail(View):
     def get(self,request,*args,**kwargs):
         product = Product.objects.get(id=kwargs['id'])
-        comments = Comment.objects.filter(product=product)
-        context = {'product':product,'comments':comments}
+        comments = Comment.objects.filter(related_product=product).order_by('-id')
+        rates = Rate.objects.filter(product=product)
+        # sum = 0
+        # ratings = 0
+        # for rate in rates:
+        #     ratings += rate.rate
+        #     sum += 1
+        # avg = ratings / sum
+
+        context = {'product':product}
+
         return render(request,'product_detail.html',context=context)
 
 class ProductDelete(LoginRequiredMixin,View):
