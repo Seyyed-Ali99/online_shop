@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product , Comment
+from .models import Category , Product , Comment,Rate
 # Register your models here.
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -18,4 +18,10 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ("title","related_product","user")
     list_filter = ("related_product","user")
     search_fields = ("related_product__name","user__username")
-   
+
+
+@admin.register(Rate)
+class RateAdmin(admin.ModelAdmin):
+    list_display = ("product", "user", "rate")
+    list_filter = ("product", "rate","user")
+    search_fields = ("product__name", "user__username")

@@ -52,14 +52,14 @@ class ProductDetail(View):
         product = Product.objects.get(id=kwargs['id'])
         comments = Comment.objects.filter(related_product=product).order_by('-id')
         rates = Rate.objects.filter(product=product)
-        # sum = 0
-        # ratings = 0
-        # for rate in rates:
-        #     ratings += rate.rate
-        #     sum += 1
-        # avg = ratings / sum
+        sum = 0
+        ratings = 0
+        for rate in rates:
+            ratings += rate.rate
+            sum += 1
+        avg = ratings / sum
 
-        context = {'product':product}
+        context = {'product':product,'rates':avg}
 
         return render(request,'product_detail.html',context=context)
 

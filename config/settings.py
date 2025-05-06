@@ -144,7 +144,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
-LOGIN_URL = '/customers/login'
+LOGIN_URL = 'email_login'
+LOGIN_REDIRECT_URL = 'dashboard_user'
+LOGOUT_REDIRECT_URL='home'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

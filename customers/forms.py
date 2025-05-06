@@ -37,3 +37,9 @@ class EmailLoginForm(forms.Form):
    # email = forms.EmailField()
    username = forms.CharField()
    password = forms.CharField(widget=forms.PasswordInput)
+
+class OTPPhoneForm(forms.Form):
+    phone = forms.CharField(max_length=11,label='phone number')
+
+class OTPCodeForm(forms.Form):
+    otp = forms.CharField(max_length=4, label='received code')
