@@ -35,7 +35,7 @@
                                         <span>{{ product.amount }}</span>
                                         <span>{{ product.store.username }}</span>
                                         <span>{{ product.date_of_product }}</span>
-                                        <a href="{% url 'add_comment' product.id %}"> Comment </a>
+                                        <a href="{% url 'add_comment' id=product.id %}"> Comment </a>
 
                                     </li>
                                 </ul>

@@ -155,7 +155,6 @@ https://templatemo.com/tm-559-zay-shop
                         <ul class="collapse show list-unstyled pl-3">
                             {% for category in categories %}
                             <li><a class="text-decoration-none" href="{% url 'shop' %}?category={{ category.name }}">{{ category.name }}</a></li>
-                            <li><a class="text-decoration-none" href="#">Women</a></li>
                             {% endfor %}
                         </ul>
                     </li>

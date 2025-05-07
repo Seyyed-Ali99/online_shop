@@ -118,44 +118,22 @@ class CategoryUpdate(LoginRequiredMixin,UpdateView):
         return super().form_valid(form)
     
 
-class AddComment(LoginRequiredMixin,CreateView):
+class AddComment(LoginRequiredMixin,View):
     login_url = 'email_login'
     template_name = 'add_comment.html'
-    model = Comment
-    form_class = CommentForm
-    success_url = reverse_lazy('comments_list')
 
-    def dispatch(self, request, *args, **kwargs):
-        # Use URL param to fetch Product
-        self.product = get_object_or_404(Product, pk=kwargs['product_id'])
-        return super().dispatch(request, *args, **kwargs)
+    def get(self,request,*args,**kwargs):
+        form = CommentForm(initial={'related_product':Product.objects.get(id=kwargs['id']),'user':request.user})
+        return render(request,self.template_name,{"form":form})
 
-    def form_valid(self, form):
-        # Set product and user before saving
-        form.instance.product = self.product
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    def post(self,request,*args,**kwargs):
+        form = CommentForm(request.POST,initial={'related_product':Product.objects.get(id=kwargs['id']),'user':request.user})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['product'] = self.product
-        return context
-
-    #
-    # def get(self,request):
-    #     form = CommentForm()
-    #     return render(request,self.template_name,{"form":form})
-    #
-    # def post(self,request,*args,**kwargs):
-    #     form = CategoryForm(request.POST)
-    #     form.instance.related_product = Product.objects.get(id=kwargs['id'])
-    #     form.instance.user = self.request.user
-    #
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('comments_list')
-    #     else :
-    #         return redirect('shop')
+        if form.is_valid():
+            form.save()
+            return redirect('comments_list')
+        else :
+            return redirect('shop')
         
 class CommentList(LoginRequiredMixin,View):
     login_url = 'email_login'

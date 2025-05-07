@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'shop.html' %}
+{% load static %}
+{% block title %}
+    orders
+{% endblock %}
 
-</body>
-</html>
+    {% block content %}
+            {% for order in orders %}
+            <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <div class="card rounded-0">
+{#                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">#}
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+{#                                        <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>#}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                    <li> {{ order.customer_id.username }} </li>
+                                    <li class="pt-2">
+                                        <span>{{ order.date_of_deliver }}</span>
+                                        <span>{{ order.adress }}</span>
+{#                                        <span>{{ product.store.username }}</span>#}
+{#                                        <span>{{ product.date_of_product }}</span>#}
+{#                                        <a href="{% url 'cart_delete' product.id %}"> Delete It </a>#}
+
+
+                                    </li>
+                                </ul>
+{#                                <ul class="list-unstyled d-flex justify-content-center mb-1">#}
+{#                                    <li>#}
+{#                                        <span>{{ rates }}</span>#}
+{#                                        <i> Score : {{ rates }}</i>#}
+{#                                        <i class="text-warning fa fa-star"></i>#}
+{#                                        <i class="text-warning fa fa-star"></i>#}
+{#                                        <i class="text-muted fa fa-star"></i>#}
+{#                                        <i class="text-muted fa fa-star"></i>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                                <p class="text-center mb-0">{{ product.price }}</p>#}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+             </div>
+
+
+    {% endblock %}

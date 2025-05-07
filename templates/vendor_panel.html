@@ -21,6 +21,9 @@
         {{ product.price }}
     {% endfor %}
     {% if user.role == 'admin' or user.role == 'manager' %}
+            {% if user.role == 'admin' %}
+                <a href="{% url 'register' %}"> Add staff </a>
+            {% endif %}
         <a href="{% url 'add_product' %}"> create product</a>
         <a href="{% url 'edit_product' %}"> Edit Product</a>
     {% endif %}

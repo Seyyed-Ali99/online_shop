@@ -47,9 +47,9 @@ class CartView(APIView):
 
 class DeleteCartItems(APIView):
     def delete(self, request):
-        product_id = request.data.get('product_id')
+        product_id = request.data.get(str('product_id'))
 
-        # Remove product from cart
+
         cart = request.session.get('cart', {})
         if product_id in cart:
             del cart[product_id]
@@ -58,14 +58,7 @@ class DeleteCartItems(APIView):
         return JsonResponse(cart, safe=False)
 
 class ShowCartItems(RetrieveAPIView):
-    # def get(self, request):
-    #
-    #     cart = request.session.get('cart', {})
-    #     return JsonResponse(cart, safe=False)
-        """
-        A view that returns a templated HTML representation of a given user.
-        """
-        # queryset = User.objects.all()
+
         renderer_classes = [TemplateHTMLRenderer]
 
         def get(self, request, *args, **kwargs):
@@ -92,27 +85,35 @@ class OrderCreateView(APIView):
         for product_id, quantity in cart.items():
             try:
                 product = Product.objects.get(id=product_id)
-                OrderItem.objects.create(order=order, product=product, quantity=quantity)
+                OrderItem.objects.create(order=order, product=product, amount=quantity)
             except:
                 continue  # Ignore if the product doesn't exist, or handle it
 
         # Clear the cart after creating an order
         del request.session['cart']
 
-        return JsonResponse({'order_id': order.id}, status=201)
+        return redirect('order_list')
 
 
 class OrderListView(APIView):
+    login_url = 'email_login'
     def get(self, request):
         # Retrieve all orders for the current user (you might want to filter by user)
-        orders = Order.objects.all()  # Change to filter orders by user if necessary
+        orders = Order.objects.filter(customer_id=self.request.user) # Change to filter orders by user if necessary
         return render(request, 'orders_list.html', {'orders': orders})
 
 
 class OrderDetailView(APIView):
+    login_url = 'email_login'
     def get(self, request, order_id):
         order = Order.objects.get(id=order_id)
-        return render(request,"order_detail.html",context={'order': order})
+        order_items = OrderItem.objects.filter(order=order)
+        total_price = 0
+        for order_item in order_items:
+            total_price += order_item.product.price * order_item.quantity
+
+        order.total_price = total_price
+        return render(request,"order_detail.html",context={'order': order,'order_items': order_items})
 
 
 # class OrderUpdateView(LoginRequiredMixin,UpdateView):
