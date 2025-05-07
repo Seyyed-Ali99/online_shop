@@ -35,6 +35,7 @@
                                         <span>{{ product.amount }}</span>
                                         <span>{{ product.store.username }}</span>
                                         <span>{{ product.date_of_product }}</span>
+                                        <a href="{% url 'add_comment' product.id %}"> Comment </a>
 
                                     </li>
                                 </ul>
@@ -51,6 +52,44 @@
                                 <p class="text-center mb-0">{{ product.price }}</p>
                             </div>
                         </div>
+                        {% for comment in comments %} {# showing product ____________comments ______________________ #}
+                            <div class="col-md-4">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0">
+{#                                    <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">#}
+                                    <h2>title : {{ comment.title }}</h2>
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+{#                                            <li><i class="far fa-heart"></i></li>#}
+{#                                            <li><i class="far fa-eye"></i></li>#}
+{#                                            <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>#}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                        <li> user : {{ comment.user }} </li>
+                                        <li class="pt-2">
+                                            <p>{{ comment.comment_body }}</p>
+
+                                        </li>
+                                    </ul>
+{#                                    <ul class="list-unstyled d-flex justify-content-center mb-1">#}
+{#                                        <li>#}
+{#                                            <span>{{ rates }}</span>#}
+{#                                            <i> Score : {{ rates }}</i>#}
+{#                                            <i class="text-warning fa fa-star"></i>#}
+{#                                            <i class="text-warning fa fa-star"></i>#}
+{#                                            <i class="text-muted fa fa-star"></i>#}
+{#                                            <i class="text-muted fa fa-star"></i>#}
+{#                                        </li>#}
+{#                                    </ul>#}
+{#                                    <p class="text-center mb-0">{{ product.price }}</p>#}
+                                </div>
+                            </div>
+                        {% endfor %}
+
                     </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
@@ -77,6 +116,8 @@
                         });
                     </script>
         </div>
+
     {% endblock %}
+   </div>
 </body>
 </html>

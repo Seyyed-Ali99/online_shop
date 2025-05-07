@@ -148,6 +148,7 @@ class DashboardUserView(LoginRequiredMixin,View):
 
 
 class UpdateUserView(LoginRequiredMixin,UpdateView):
+    login_url = 'login'
     model = User 
     form_class = UserRegisterForm  
     template_name = 'update_user.html'  
@@ -163,6 +164,7 @@ class UpdateUserView(LoginRequiredMixin,UpdateView):
 #     next_page = 'home'
 
 class CustomLogoutView(LoginRequiredMixin,View):
+    login_url = 'login'
     def get(self,request):
         logout(request)
         return redirect('home')

@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = ['comment_body']
 
 
 class RateForm(forms.ModelForm):

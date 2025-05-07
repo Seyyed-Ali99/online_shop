@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 
 class AddProduct(LoginRequiredMixin,View):
-    
+    login_url = 'email_login'
     def get(self,request):
         form = ProductForm()
         return render(request,"add_product.html",{"form":form})
@@ -24,11 +24,12 @@ class AddProduct(LoginRequiredMixin,View):
         else :
             return HttpResponseBadRequest()
 
-class AllComment(LoginRequiredMixin,View):
-    def get(self,request):
-        product = Product.objects.get(store=request.user.id)
-        comments = Comment.objects.filter(product=product)
-        return render(request,"stores_comments.html",context={"comments":comments})
+# class AllComment(LoginRequiredMixin,View):
+#     login_url = 'login'
+#     def get(self,request):
+#         product = Product.objects.get(store=request.user.id)
+#         comments = Comment.objects.filter(product=product)
+#         return render(request,"stores_comments.html",context={"comments":comments})
 
 class ProductList(View):
     
@@ -59,7 +60,7 @@ class ProductDetail(View):
             sum += 1
         avg = ratings / sum
 
-        context = {'product':product,'rates':avg}
+        context = {'product':product,'rates':avg,'comments':comments}
 
         return render(request,'product_detail.html',context=context)
 
@@ -72,6 +73,7 @@ class ProductDelete(LoginRequiredMixin,View):
 
 
 class ProductUpdate(LoginRequiredMixin,UpdateView):
+    login_url = 'email_login'
     model = Product 
     form_class = ProductForm  
     template_name = 'update_product.html'  
@@ -116,26 +118,51 @@ class CategoryUpdate(LoginRequiredMixin,UpdateView):
         return super().form_valid(form)
     
 
-class AddComment(LoginRequiredMixin,View):
-    
-    def get(self,request):
-        form = CommentForm()
-        return render(request,"",{"form":form})
+class AddComment(LoginRequiredMixin,CreateView):
+    login_url = 'email_login'
+    template_name = 'add_comment.html'
+    model = Comment
+    form_class = CommentForm
+    success_url = reverse_lazy('comments_list')
 
-    def post(self,request):
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-        else :
-            return HttpResponseBadRequest()
+    def dispatch(self, request, *args, **kwargs):
+        # Use URL param to fetch Product
+        self.product = get_object_or_404(Product, pk=kwargs['product_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # Set product and user before saving
+        form.instance.product = self.product
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['product'] = self.product
+        return context
+
+    #
+    # def get(self,request):
+    #     form = CommentForm()
+    #     return render(request,self.template_name,{"form":form})
+    #
+    # def post(self,request,*args,**kwargs):
+    #     form = CategoryForm(request.POST)
+    #     form.instance.related_product = Product.objects.get(id=kwargs['id'])
+    #     form.instance.user = self.request.user
+    #
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('comments_list')
+    #     else :
+    #         return redirect('shop')
         
-class CommentList(View):
+class CommentList(LoginRequiredMixin,View):
+    login_url = 'email_login'
     def get(self,request):
-   
-        products = Product.objects.all().order_by('-id')
-        context = {"products":products}
-        return render
+        comments = Comment.objects.filter(user=request.user.id)
+        context = {'comments':comments}
+        return render(request,'comments_list.html',context=context)
 
 class CommentDetail(View):
     pass
@@ -148,18 +175,19 @@ class CommentDelete(LoginRequiredMixin,View):
         pass
 
 
-class CommentUpdate(LoginRequiredMixin,UpdateView):
-    model = Comment 
-    form_class = CommentForm  
-    template_name = 'update_comment.html'  
-    success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update  
-
-    def form_valid(self, form):  
-        messages.success(self.request, 'Item successfully updated!')  
-        return super().form_valid(form)
+# class CommentUpdate(LoginRequiredMixin,UpdateView):
+#     model = Comment
+#     form_class = CommentForm
+#     template_name = 'update_comment.html'
+#     success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update
+#
+#     def form_valid(self, form):
+#         messages.success(self.request, 'Item successfully updated!')
+#         return super().form_valid(form)
 
 
 class AddRate(LoginRequiredMixin,View):
+    login_url = 'email_login'
     def get(self,request,*args,**kwargs):
         product = Product.objects.get(id=kwargs['id'])
         rateform = RateForm()

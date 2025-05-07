@@ -15,7 +15,7 @@
     {{ user.phone_number }}
     <a href="{% url 'update_user' %}"> update_user</a>
     <a href="{% url 'logout' %}"> logout </a>
-{#    <a href="{% url %}"></a>#}
+
     {% for product in products %}
         {{ product.name }}
         {{ product.price }}

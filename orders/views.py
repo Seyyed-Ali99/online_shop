@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,35 +11,41 @@ from django.http import JsonResponse
 from .models import Order, OrderItem
 from product.models import Product
 from django.views.generic import UpdateView
+from .serializers import OrderItemSerializer,OrderSerializer
 
 
 class CartView(APIView):
-    def get(self, request):
 
-        cart = request.session.get('cart', {})
-        return JsonResponse(cart, safe=False)
 
     def post(self, request):
         product_id =str(request.data.get('product_id'))
         print(type(product_id))
         # quantity = request.data.get('quantity', 1)
         quantity = 1
-
+        product = Product.objects.get(id=int(product_id))
         cart = request.session.get('cart', {})
-        print(cart)
-
-
-        if product_id in cart:
-            cart[product_id] += quantity  # Increase quantity
-            print(cart)
-        else:
-            cart[product_id] = quantity  # Add new product
-            print(cart)
+        for product in cart:
+            print(product)
+        if quantity > product.amount:
+            if product_id in cart:
+                cart[product_id] += quantity # Increase quantity
+                product.amount -= 1
+                print(cart)
+            else:
+                cart[product_id] = quantity # Add new product
+                product.amount -= 1
+                print(cart)
+        else :
+            return redirect('shop')
 
         # Save cart in session
         request.session['cart'] = cart
         return JsonResponse(cart, safe=False, status=status.HTTP_201_CREATED)
 
+
+    # Create your views here.
+
+class DeleteCartItems(APIView):
     def delete(self, request):
         product_id = request.data.get('product_id')
 
@@ -48,10 +56,26 @@ class CartView(APIView):
             request.session['cart'] = cart
 
         return JsonResponse(cart, safe=False)
-    # Create your views here.
 
+class ShowCartItems(RetrieveAPIView):
+    # def get(self, request):
+    #
+    #     cart = request.session.get('cart', {})
+    #     return JsonResponse(cart, safe=False)
+        """
+        A view that returns a templated HTML representation of a given user.
+        """
+        # queryset = User.objects.all()
+        renderer_classes = [TemplateHTMLRenderer]
 
+        def get(self, request, *args, **kwargs):
+            cart = request.session.get('cart', {})
+            products_list = []
+            for product in cart.keys() :
+                product = Product.objects.get(id=product)
+                products_list.append(product)
 
+            return Response({'products': products_list}, template_name='cart.html')
 
 class OrderCreateView(APIView):
     def post(self, request):
@@ -70,7 +94,7 @@ class OrderCreateView(APIView):
                 product = Product.objects.get(id=product_id)
                 OrderItem.objects.create(order=order, product=product, quantity=quantity)
             except:
-                continue  # Ignore if the product doesn't exist, or handle it accordingly
+                continue  # Ignore if the product doesn't exist, or handle it
 
         # Clear the cart after creating an order
         del request.session['cart']
