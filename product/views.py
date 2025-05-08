@@ -153,17 +153,6 @@ class CommentDelete(LoginRequiredMixin,View):
         pass
 
 
-# class CommentUpdate(LoginRequiredMixin,UpdateView):
-#     model = Comment
-#     form_class = CommentForm
-#     template_name = 'update_comment.html'
-#     success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update
-#
-#     def form_valid(self, form):
-#         messages.success(self.request, 'Item successfully updated!')
-#         return super().form_valid(form)
-
-
 class AddRate(LoginRequiredMixin,View):
     login_url = 'email_login'
     def get(self,request,*args,**kwargs):

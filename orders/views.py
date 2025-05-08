@@ -6,12 +6,9 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.views import View
 from django.http import JsonResponse
 from .models import Order, OrderItem
 from product.models import Product
-from django.views.generic import UpdateView
-from .serializers import OrderItemSerializer,OrderSerializer
 
 
 class CartView(APIView):
@@ -20,23 +17,21 @@ class CartView(APIView):
     def post(self, request):
         product_id =str(request.data.get('product_id'))
         print(type(product_id))
-        # quantity = request.data.get('quantity', 1)
         quantity = 1
         product = Product.objects.get(id=int(product_id))
         cart = request.session.get('cart', {})
         for product in cart:
-            print(product)
-        if quantity > product.amount:
-            if product_id in cart:
-                cart[product_id] += quantity # Increase quantity
-                product.amount -= 1
-                print(cart)
-            else:
-                cart[product_id] = quantity # Add new product
-                product.amount -= 1
-                print(cart)
-        else :
-            return redirect('shop')
+            if quantity > product.amount:
+                if product_id in cart:
+                    cart[product_id] += quantity # Increase quantity
+                    product.amount -= 1
+
+                else:
+                    cart[product_id] = quantity # Add new product
+                    product.amount -= 1
+
+            else :
+                return redirect('shop')
 
         # Save cart in session
         request.session['cart'] = cart
@@ -132,9 +127,6 @@ class OrderUpdateView(APIView):
     fields = ["date_of_deliver","discount","address","orderitem_id"]  # Specify fields you want to be editable
     success_url = reverse_lazy('order_list')  # Redirect after update
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['order'] = self.object  # Add the order instance to the context
-    #     return context
+
 
 

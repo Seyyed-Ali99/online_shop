@@ -1,4 +1,5 @@
 # from django.contrib.auth.handlers.modwsgi import check_password
+import decouple
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
@@ -21,9 +22,6 @@ from kavenegar import *
 
 class EmailLoginView(View):
     template_name = 'email_login.html'
-    # # form_class = EmailLoginForm
-    # redirect_authenticated_user = True
-    # success_url = reverse_lazy('dashboard_user')
 
     def get(self, request):
         form = EmailLoginForm()
@@ -31,20 +29,14 @@ class EmailLoginView(View):
 
     def post(self, request):
         form = EmailLoginForm(request.POST)
-        # # print(form)
-        # # username = request.POST.get('email')
-        # username = "alihoseini"
-        # password = request.POST.get('password')
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            # print(username, password)
-            # print(check_password(password,encoded='pbkdf2_sha256$1000000$ED02ywjmAe81f9RK7sxK4d$mCn3tMDGT4fsHJye1pGKfJBWGe39iaxS+FHH2GdTTG8='))
             user = authenticate( username=username, password=password)
-            # print(user)
+
 
             if user:
-                # print(" user exists")
                 login(request, user)
                 return redirect('dashboard_user')
 
@@ -52,6 +44,7 @@ class EmailLoginView(View):
                 messages.error(request, 'Invalid email or password.')
                 # print("no login")
             return render(request, self.template_name, {'form': form})
+
 
 class OTPLogin(FormView):
     template_name = 'otp_login.html'
@@ -111,23 +104,6 @@ class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'register.html'
     success_url = reverse_lazy('email_login')
-    # template_name = 'register.html'
-    #
-    # def get(self,request):
-    #     form = UserRegisterForm()
-    #     return render(request,self.template_name,{'form':form})
-    #
-    # def post(self,request):
-    #     form = UserRegisterForm(request.POST)
-    #     if form.is_valid():
-    #         print("form is valid")
-    #         form.save()
-    #         messages.success(request, 'Registration successful. You can now log in.')
-    #
-    #         return redirect('email_login')
-    #     else :
-    #         return HttpResponseBadRequest()
-
 
 
 class DashboardUserView(LoginRequiredMixin,View):
@@ -148,20 +124,15 @@ class DashboardUserView(LoginRequiredMixin,View):
 
 
 class UpdateUserView(LoginRequiredMixin,UpdateView):
-    login_url = 'login'
+    login_url = 'email_login'
     model = User 
     form_class = UserRegisterForm  
     template_name = 'update_user.html'  
     success_url = reverse_lazy('dashboard_user')
 
-    def form_valid(self, form):  
-        messages.success(self.request, 'Item successfully updated!')  
-        return super().form_valid(form)
-    
-# class CustomLogoutView(LoginRequiredMixin,LogoutView):
-#     http_method_names = ["post", "options"]
-#     template_name = 'logout.html'
-#     next_page = 'home'
+    def get_object(self, queryset=None):
+        return self.request.user
+
 
 class CustomLogoutView(LoginRequiredMixin,View):
     login_url = 'login'
@@ -169,10 +140,6 @@ class CustomLogoutView(LoginRequiredMixin,View):
         logout(request)
         return redirect('home')
 
-    # def post(self, request, *args, **kwargs):
-    #     """Handle POST request for logout."""
-    #     self.dispatch(request, *args, **kwargs)
-    #     return super().post(request, *args, **kwargs)
 
 class StoresList(View):
     template_name = 'stores_list.html'
