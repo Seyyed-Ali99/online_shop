@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import EmailLoginView ,OTPLogin,OTPVerify, RegisterView , UpdateUserView , DashboardUserView , CustomLogoutView,StoresList,StoresDetail
+from .views import EmailLoginView ,OTPLogin,OTPVerify, RegisterView , UpdateUserView , DashboardUserView , CustomLogoutView,StoresList,StoresDetail,StoresProducts
 
 urlpatterns = [
     path("register/",RegisterView.as_view(),name='register'),
@@ -14,6 +14,7 @@ urlpatterns = [
 
     path("stores_list/",StoresList.as_view(),name='stores_list'),
     path("stores_detail/<int:id>",StoresDetail.as_view(),name='stores_detail'),
+    path("stores_detail/<int:id>/store_products/",StoresProducts.as_view(),name='store_products'),
     # path("vendor_dashboard/<int:id>",DashboardVendorView.as_view(),name='vendor_dashboard'),
     #
 ]

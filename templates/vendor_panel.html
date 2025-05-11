@@ -16,6 +16,7 @@
     <a href="{% url 'update_user' %}"> update_user</a>
     <a href="{% url 'logout' %}"> logout </a>
 
+
     {% for product in products %}
         {{ product.name }}
         {{ product.price }}
@@ -25,6 +26,6 @@
                 <a href="{% url 'register' %}"> Add staff </a>
             {% endif %}
         <a href="{% url 'add_product' %}"> create product</a>
-        <a href="{% url 'edit_product' %}"> Edit Product</a>
+{#        <a href="{% url 'edit_product' %}"> Edit Product</a>#}
     {% endif %}
 {% endblock %}

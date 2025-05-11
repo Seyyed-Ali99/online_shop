@@ -9,7 +9,7 @@ class UserRegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name','last_name','username', 'email','phone_number','role','address']
+        fields = ['first_name','last_name','username', 'email','phone_number','role','address','store']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
@@ -18,12 +18,28 @@ class UserRegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
         return password2
 
-    # def save(self, commit=True):
-    #     user = super().save(commit=False)
-    #     user.set_password(self.cleaned_data['password1'])  # hash password
-    #     if commit:
-    #         user.save()
-    #     return user
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+        # If not logged in: only allow customer or store_admin
+        if not self.request or not self.request.user.is_authenticated:
+            self.fields['role'].choices = [
+                ('customer', 'customer'),
+                ('admin', 'admin'),
+            ]
+            # For registration, store can be empty
+            self.fields['store'].required = False
+        else:
+            user = self.request.user
+            if user.role == 'admin':
+                self.fields['role'].choices = [
+                    ('manager', 'manager'),
+                    ('operator', 'operator'),
+                ]
+            else:
+                pass
+
     def save(self, commit=True):
         user = super().save(commit=False)
 

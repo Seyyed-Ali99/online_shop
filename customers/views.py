@@ -105,6 +105,21 @@ class RegisterView(CreateView):
     template_name = 'register.html'
     success_url = reverse_lazy('email_login')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request  # pass request to form for role logic
+        return kwargs
+
+    # def form_valid(self, form):
+    #     user = form.save(commit=False)
+    #     user.set_password(form.cleaned_data['password'])
+    #     store = form.cleaned_data.get('store')
+    #     if store:
+    #         user.store = store
+    #     user.save()
+    #     login(self.request, user)
+    #     return super().form_valid(form)
+
 
 class DashboardUserView(LoginRequiredMixin,View):
     login_url = 'email_login'
@@ -156,6 +171,13 @@ class StoresDetail(View):
         products = Product.objects.filter(store=store)
         context = {"store":store,'products':products}
         return render(request,self.template_name, context=context)
+
+class StoresProducts(View):
+    template_name = 'store_products.html'
+    def get(self, request,*args,**kwargs):
+        store = User.objects.get(id=kwargs['id'])
+        products = Product.objects.filter(store=store)
+        return render(request,self.template_name, context={'products':products})
 
 
 
