@@ -6,7 +6,8 @@ urlpatterns = [
     path('add_product/', AddProduct.as_view(), name='add_product'),
 
     path("all_comments/",CommentList.as_view(),name="comments_list"),
-    path("product/<int:id>/edit_product/",ProductUpdate.as_view(),name="edit_product"),
+
+    path("edit_product/<int:id>",ProductUpdate.as_view(),name="edit_product"),
     path("shop/",ProductList.as_view(),name="shop"),
     path("product/<int:id>/",ProductDetail.as_view(),name="product_detail"),
     path("product_delete/<int:id>/",ProductDelete.as_view(),name="product_delete"),

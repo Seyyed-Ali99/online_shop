@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,6 +10,8 @@ from rest_framework import status
 from django.http import JsonResponse
 from .models import Order, OrderItem
 from product.models import Product
+from accounts.models import User
+from .serializers import OrderSerializer
 
 
 class CartView(APIView):
@@ -91,6 +94,7 @@ class OrderCreateView(APIView):
 
 
 class OrderListView(APIView):
+    permission_classes = [IsAuthenticated]
     login_url = 'email_login'
     def get(self, request):
         # Retrieve all orders for the current user (you might want to filter by user)
@@ -109,6 +113,22 @@ class OrderDetailView(APIView):
 
         order.total_price = total_price
         return render(request,"order_detail.html",context={'order': order,'order_items': order_items})
+
+class ShopOrders(APIView):
+    permission_classes = [IsAuthenticated]
+    login_url = 'email_login'
+    def get(self, request):
+        current_user = self.request.user
+        if current_user.role == 'admin':
+            orders = Order.objects.filter(order_items__product_id__store=current_user.id).order_by('-id')
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data)
+        elif current_user.role == 'operator' or current_user.role == 'manager':
+            orders = Order.objects.filter(order_items__product_id__store=current_user.store.id).order_by('-id')
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data)
+        else:
+            return JsonResponse({'error': ' You have no permission to view .'}, status=403)
 
 
 # class OrderUpdateView(LoginRequiredMixin,UpdateView):

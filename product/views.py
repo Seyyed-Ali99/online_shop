@@ -79,6 +79,8 @@ class ProductUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'update_product.html'  
     success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update  
 
+    # def get_object(self, queryset=None):
+    #     return reverse_lazy('product_detail',kwargs={'id': self.get_object().id})
     # def form_valid(self, form):
     #     messages.success(self.request, 'Item successfully updated!')
     #     return super().form_valid(form)

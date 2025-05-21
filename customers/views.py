@@ -126,12 +126,12 @@ class DashboardUserView(LoginRequiredMixin,View):
     def get(self,request,*args,**kwargs):
         user = User.objects.get(id=request.user.id)
         if user.role == "customer":
-            comments = Comment.objects.filter(user=user)
-            context = {"user":user,"comments":comments}
+            # comments = Comment.objects.filter(user=user)
+            context = {"user":user}
             return render(request, "customer_panel.html", context=context)
         elif user.role == "admin" or user.role=="manager" or user.role=="operator":
-            store_products = Product.objects.filter(store=user)
-            context = {"user":user,"products":store_products}
+            # store_products = Product.objects.filter(store=user)
+            context = {"user":user}
             return render(request, "vendor_panel.html", context=context)
 
         else :
@@ -180,8 +180,18 @@ class StoresProducts(View):
         return render(request,self.template_name, context={'products':products})
 
 
-
-
+class ShopProducts(View):
+    template_name = 'shop_products.html'
+    def get(self, request,*args,**kwargs):
+        current_user = self.request.user
+        if self.request.user.role == "manager" or self.request.user.role == "operator":
+            product = Product.objects.filter(store=current_user.store)
+            return render(request,self.template_name, context={'products':product})
+        elif self.request.user.role == "admin":
+            product = Product.objects.filter(store=current_user.id)
+            return render(request,self.template_name, context={'products':product})
+        else:
+            return HttpResponseForbidden()
 
 
 
