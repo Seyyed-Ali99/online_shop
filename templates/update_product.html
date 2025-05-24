@@ -30,11 +30,12 @@
     Edit Product
 {% endblock %}
 {% block content  %}
-    <form method="post" action="{% url 'edit_product'  %}">
+    <form method="post" action="update_product.html">
 
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit"> Update </button>
+        <button type="submit"><a href="{% url 'shop_products' %}" style="color: #191c1f"> Back to products list </a></button>
     </form>
 
 {% endblock %}

@@ -75,16 +75,10 @@ class ProductDelete(LoginRequiredMixin,View):
 class ProductUpdate(LoginRequiredMixin,UpdateView):
     login_url = 'email_login'
     model = Product 
-    form_class = ProductForm  
+    form_class = ProductForm
     template_name = 'update_product.html'  
-    success_url = reverse_lazy('product_detail')  # Redirect to dashboard after update  
+    success_url = reverse_lazy('shop_products')
 
-    # def get_object(self, queryset=None):
-    #     return reverse_lazy('product_detail',kwargs={'id': self.get_object().id})
-    # def form_valid(self, form):
-    #     messages.success(self.request, 'Item successfully updated!')
-    #     return super().form_valid(form)
-    
 
 class AddCategory(LoginRequiredMixin,View):
     

@@ -17,6 +17,7 @@ urlpatterns = [
     path("stores_detail/<int:id>",StoresDetail.as_view(),name='stores_detail'),
     path("stores_detail/<int:id>/store_products/",StoresProducts.as_view(),name='store_products'),
     path("ShopProducts/",ShopProducts.as_view(),name='shop_products'),
+
     # path("vendor_dashboard/<int:id>",DashboardVendorView.as_view(),name='vendor_dashboard'),
     #
 ]
