@@ -80,17 +80,34 @@ class DeleteCartItems(APIView):
         return JsonResponse(cart, safe=False)
 
 class ShowCartItems(APIView):
+    def get(self, request, *args, **kwargs):
+        cart = request.session.get('cart', {})  # {'product_id': quantity, ...}
+        products_list = []
 
-        def get(self, request, *args, **kwargs):
-            cart = request.session.get('cart', {})
-            products_list = []
-            for product in cart.keys() :
-                product = Product.objects.get(id=product)
-                products_list.append(product)
+        for product_id, quantity in cart.items():
+                product = Product.objects.get(id=product_id)
+                products_list.append({
+                    'id': product.id,
+                    'name': product.name,
+                    'image_url': product.image.url,
+                    'category': product.category.name,
+                    'amount': product.amount,
+                    # 'store': product.store.username,
+                    'date_of_product': str(product.date_of_product),
+                    'price': str(product.price),
+                    'quantity': quantity,
+                })
 
-            print(products_list)
-            return Response(products_list)
-
+        return Response({'products': products_list})
+        # def get(self, request, *args, **kwargs):
+        #     cart = request.session.get('cart', {})
+        #     products_list = []
+        #     for product in cart.keys() :
+        #         product = Product.objects.get(id=product)
+        #         products_list.append(product)
+        #
+        #     print(products_list)
+        #     return Response(products_list)
 
 class OrderCreateView(APIView):
     def post(self, request):
