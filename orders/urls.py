@@ -3,9 +3,9 @@ from .views import CartView, OrderUpdateView, OrderCreateView, OrderListView, Or
     DeleteCartItems, ShopOrders
 
 urlpatterns = [
-    path('api/cart/', CartView.as_view(), name='cart'),
+    path('api/cart/add/', CartView.as_view(), name='cart'),
 
-    path('api/cart/<int:product_id>/delete', DeleteCartItems.as_view(), name='cart_delete'),
+    path('api/cart/<int:product_id>/delete/', DeleteCartItems.as_view(), name='cart_delete'),
 
     path('api/show_cart/',ShowCartItems.as_view(),name='cart_items'),
     path('update/', OrderUpdateView.as_view(), name='update_order'),

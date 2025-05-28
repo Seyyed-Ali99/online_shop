@@ -1,123 +1,185 @@
+{#{% extends 'shop.html' %}#}
+{#{% load static %}#}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>#}
+{#        {% block title %}#}
+{#            Product_detail#}
+{#        {% endblock %}#}
+{#    </title>#}
+{#</head>#}
+{#<body>#}
+{#    {% block content %}#}
+{#        <div class="row">#}
+{#                    <div class="col-md-4">#}
+{#                        <div class="card mb-4 product-wap rounded-0">#}
+{#                            <div class="card rounded-0">#}
+{#                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">#}
+{#                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">#}
+{#                                    <ul class="list-unstyled">#}
+{##}
+{#                                        <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>#}
+{#                                    </ul>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="card-body">#}
+{##}
+{#                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">#}
+{#                                    <li> {{ product.name }} </li>#}
+{#                                    <li class="pt-2">#}
+{#                                        <span>{{ product.category }}</span>#}
+{#                                        <span>{{ product.amount }}</span>#}
+{#                                        <span>{{ product.store.username }}</span>#}
+{#                                        <span>{{ product.date_of_product }}</span>#}
+{#                                        <a href="{% url 'add_comment' id=product.id %}"> Comment </a>#}
+{##}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                                <ul class="list-unstyled d-flex justify-content-center mb-1">#}
+{#                                    <li>#}
+{##}
+{#                                        <i> Score : {{ rates }}</i>#}
+{##}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                                <p class="text-center mb-0">{{ product.price }}</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        {% for comment in comments %} {# showing product ____________comments ______________________ #}
+{#                            <div class="col-md-4">#}
+{#                            <div class="card mb-4 product-wap rounded-0">#}
+{#                                <div class="card rounded-0">#}
+{#                                    <h2>title : {{ comment.title }}</h2>#}
+{#                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">#}
+{#                                        <ul class="list-unstyled">#}
+{##}
+{##}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card-body">#}
+{##}
+{#                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">#}
+{#                                        <li> user : {{ comment.user }} </li>#}
+{#                                        <li class="pt-2">#}
+{#                                            <p>{{ comment.comment_body }}</p>#}
+{##}
+{#                                        </li>#}
+{#                                    </ul>#}
+{##}
+{##}
+{#                            </div>#}
+{#                        {% endfor %}#}
+{##}
+{#                    </div>#}
+{##}
+{#        </div>#}
+{#        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+{##}
+{#    {% endblock %}#}
+{#   </div>#}
+{#    </div>#}
+{#</body>#}
+{#</html>#}
+
+{# test new template from AI  #}
+
 {% extends 'shop.html' %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}
-            Product_detail
-        {% endblock %}
-    </title>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Product_detail{% endblock %}</title>
+    <!-- Include Font Awesome for icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add your CSS here -->
 </head>
 <body>
     {% block content %}
-        <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-4 product-wap rounded-0">
-                            <div class="card rounded-0">
-                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">
-                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-{#                                        <li><i class="far fa-heart"></i></li>#}
-{#                                        <li><i class="far fa-eye"></i></li>#}
-                                        <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-
-                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li> {{ product.name }} </li>
-                                    <li class="pt-2">
-                                        <span>{{ product.category }}</span>
-                                        <span>{{ product.amount }}</span>
-                                        <span>{{ product.store.username }}</span>
-                                        <span>{{ product.date_of_product }}</span>
-                                        <a href="{% url 'add_comment' id=product.id %}"> Comment </a>
-
-                                    </li>
-                                </ul>
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                    <li>
-{#                                        <span>{{ rates }}</span>#}
-                                        <i> Score : {{ rates }}</i>
-{#                                        <i class="text-warning fa fa-star"></i>#}
-{#                                        <i class="text-warning fa fa-star"></i>#}
-{#                                        <i class="text-muted fa fa-star"></i>#}
-{#                                        <i class="text-muted fa fa-star"></i>#}
-                                    </li>
-                                </ul>
-                                <p class="text-center mb-0">{{ product.price }}</p>
-                            </div>
-                        </div>
-                        {% for comment in comments %} {# showing product ____________comments ______________________ #}
-                            <div class="col-md-4">
-                            <div class="card mb-4 product-wap rounded-0">
-                                <div class="card rounded-0">
-{#                                    <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">#}
-                                    <h2>title : {{ comment.title }}</h2>
-                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                        <ul class="list-unstyled">
-{#                                            <li><i class="far fa-heart"></i></li>#}
-{#                                            <li><i class="far fa-eye"></i></li>#}
-{#                                            <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>#}
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-
-                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                        <li> user : {{ comment.user }} </li>
-                                        <li class="pt-2">
-                                            <p>{{ comment.comment_body }}</p>
-
-                                        </li>
-                                    </ul>
-{#                                    <ul class="list-unstyled d-flex justify-content-center mb-1">#}
-{#                                        <li>#}
-{#                                            <span>{{ rates }}</span>#}
-{#                                            <i> Score : {{ rates }}</i>#}
-{#                                            <i class="text-warning fa fa-star"></i>#}
-{#                                            <i class="text-warning fa fa-star"></i>#}
-{#                                            <i class="text-muted fa fa-star"></i>#}
-{#                                            <i class="text-muted fa fa-star"></i>#}
-{#                                        </li>#}
-{#                                    </ul>#}
-{#                                    <p class="text-center mb-0">{{ product.price }}</p>#}
-                                </div>
-                            </div>
-                        {% endfor %}
-
+    <div class="row">
+        <!-- Product Card -->
+        <div class="col-md-4">
+            <div class="card mb-4 product-wap rounded-0">
+                <div class="card rounded-0">
+                    <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                        <ul class="list-unstyled">
+                            <li>
+                                <!-- Button to add to cart -->
+                                <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                        $(document).ready(function() {
-                            $('.list-unstyled li').on('click',function () {
-                            $.ajax({
-                                url: '{% url 'cart' %}',
-                                type: 'POST',
-                                contentType: 'application/json',
-                                headers: {
-                                    'X-CSRFToken': '{{ csrf_token }}'
-                                    },
-                                data: JSON.stringify({ product_id: {{ product.id }} }),
-                                success: function(cart) {
-                                    console.log('Cart updated:', cart);
-                                    // Optionally update the UI with the new cart state
-                                },
-                                error: function(xhr) {
-                                    console.error('Error adding to cart:', xhr.responseText);
-                                }
-                            });
-                        }
-                            );
-                        });
-                    </script>
+                </div>
+                <div class="card-body">
+                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                        <li>{{ product.name }}</li>
+                        <li class="pt-2">
+                            <span>{{ product.category }}</span>
+                            <span>{{ product.amount }}</span>
+                            <span>{{ product.store.username }}</span>
+                            <span>{{ product.date_of_product }}</span>
+                            <a href="{% url 'add_comment' id=product.id %}">Comment</a>
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled d-flex justify-content-center mb-1">
+                        <li><i>Score: {{ rates }}</i></li>
+                    </ul>
+                    <p class="text-center mb-0">{{ product.price }}</p>
+                </div>
+            </div>
         </div>
 
+        <!-- Comments Section -->
+        <div class="col-md-8">
+            {% for comment in comments %}
+            <div class="card mb-4 product-wap rounded-0">
+                <div class="card rounded-0">
+                    <h2> Title : {{ comment.title }}</h2>
+                    <div class="card-body">
+                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                            <li> User : {{ comment.user }}</li>
+                        </ul>
+                        <p> Comment : {{ comment.comment_body }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').click(function() {
+                const productId = $(this).data('product-id');
+                fetch("{% url 'cart' %}", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ product_id: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
     {% endblock %}
-   </div>
 </body>
 </html>

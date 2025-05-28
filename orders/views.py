@@ -15,30 +15,55 @@ from .serializers import OrderSerializer
 
 
 class CartView(APIView):
-
-
-    def post(self, request):
-        product_id =str(request.data.get('product_id'))
-        print(type(product_id))
+    def post(self,request,*args,**kwargs):
+        product_id = request.data.get('product_id')
+        # product_id = Product.objects.get(id=kwargs['id'])
+        related_product = Product.objects.get(id=product_id)
         quantity = 1
-        product = Product.objects.get(id=int(product_id))
         cart = request.session.get('cart', {})
-        for product in cart:
-            if quantity > product.amount:
-                if product_id in cart:
-                    cart[product_id] += quantity # Increase quantity
-                    product.amount -= 1
+        if quantity < related_product.amount:
+            if str(product_id) in cart:
+                cart[str(product_id)]['quantity'] += quantity
+                print("adding amount to cart")
+                related_product.amount -= 1
+            else:
+                cart[str(product_id)] = {'quantity': quantity}
+                print("adding product to cart")
+                related_product.amount -= 1
 
-                else:
-                    cart[product_id] = quantity # Add new product
-                    product.amount -= 1
+            request.session['cart'] = cart
+            # print(cart)
+            # print(related_product.amount)
+            return Response({'message': 'Product added', 'cart': cart})
+        else:
+            return Response({'message': 'Product is out of stock'})
 
-            else :
-                return redirect('shop')
 
-        # Save cart in session
-        request.session['cart'] = cart
-        return JsonResponse(cart, safe=False, status=status.HTTP_201_CREATED)
+
+
+    # def post(self, request, *args, **kwargs):
+    #     # product_id =str(request.data.get('product_id'))
+    #     product_id = Product.objects.get(id=kwargs['id'])
+    #     print(type(product_id))
+    #     quantity = 1
+    #     # product = Product.objects.get(id=int(product_id))
+    #     cart = request.session.get('cart', {})
+    #     for product in cart:
+    #         if quantity > product_id.amount:
+    #             if product in cart:
+    #                 cart[product] += quantity # Increase quantity
+    #                 product_id.amount -= 1
+    #
+    #             else:
+    #                 cart[product] = quantity # Add new product
+    #                 product_id.amount -= 1
+    #
+    #         else :
+    #             return redirect('shop')
+    #
+    #     # Save cart in session
+    #     request.session['cart'] = cart
+    #     return JsonResponse(cart, safe=False, status=status.HTTP_201_CREATED)
 
 
     # Create your views here.
@@ -47,7 +72,6 @@ class DeleteCartItems(APIView):
     def delete(self, request):
         product_id = request.data.get(str('product_id'))
 
-
         cart = request.session.get('cart', {})
         if product_id in cart:
             del cart[product_id]
@@ -55,9 +79,7 @@ class DeleteCartItems(APIView):
 
         return JsonResponse(cart, safe=False)
 
-class ShowCartItems(RetrieveAPIView):
-
-        renderer_classes = [TemplateHTMLRenderer]
+class ShowCartItems(APIView):
 
         def get(self, request, *args, **kwargs):
             cart = request.session.get('cart', {})
@@ -66,7 +88,9 @@ class ShowCartItems(RetrieveAPIView):
                 product = Product.objects.get(id=product)
                 products_list.append(product)
 
-            return Response({'products': products_list}, template_name='cart.html')
+            print(products_list)
+            return Response(products_list)
+
 
 class OrderCreateView(APIView):
     def post(self, request):

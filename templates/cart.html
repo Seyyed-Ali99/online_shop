@@ -1,81 +1,46 @@
-{% extends 'shop.html' %}
-{% load static %}
-{% block title %}
-    Cart
-{% endblock %}
-{% block content %}
-    {% for product in products %}
-<div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-4 product-wap rounded-0">
-                            <div class="card rounded-0">
-                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">
-                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-{#                                        <li><i class="fas fa-cart-plus"><a href="{% url 'cart' %}"></a></i></li>#}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-
-                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li> {{ product.name }} </li>
-                                    <li class="pt-2">
-                                        <span>{{ product.category }}</span>
-                                        <span>{{ product.amount }}</span>
-                                        <span>{{ product.store.username }}</span>
-                                        <span>{{ product.date_of_product }}</span>
-{#                                        <a href="{% url 'add_comment' product.id %}"> Comment </a>#}
-
-                                    </li>
-                                </ul>
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                    <li>
-{#                                        <span>{{ rates }}</span>#}
-                                        <i> Score : {{ rates }}</i>
-{#                                        <i class="text-warning fa fa-star"></i>#}
-{#                                        <i class="text-warning fa fa-star"></i>#}
-{#                                        <i class="text-muted fa fa-star"></i>#}
-{#                                        <i class="text-muted fa fa-star"></i>#}
-                                    </li>
-                                </ul>
-                                <p class="text-center mb-0">{{ product.price }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
-</div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  function loadCart() {
-    $.ajax({
-      url: '{% url "cart_items" %}',
-      method: 'GET',
-      success: function(data) {
-        let html = '';
-        if(data.length === 0){
-          html = '<p>Your cart is empty.</p>';
-        } else {
-          html += '<ul>';
-          data.forEach(function(item){
-            html += '<li>' + item.product + ': ' + item.amount + ' @ ' + item.price + '</li>';
-          });
-          html += '</ul>';
-        }
-        $('#cart-container').html(html);
-      },
-      error: function(xhr, status, error) {
-        $('#cart-container').html('<p>Error loading cart.</p>');
-      }
-    });
-  }
-
-  // Load cart on page load
-  $(document).ready(function() {
-    loadCart();
-  });
-</script>
-    {% endblock %}
+{#{% extends 'shop.html' %}#}
+{#{% load static %}#}
+{#{% block title %}#}
+{#    Cart#}
+{#{% endblock %}#}
+{#{% block content %}#}
+{#    {% for product in products %}#}
+{#<div class="row">#}
+{#                    <div class="col-md-4">#}
+{#                        <div class="card mb-4 product-wap rounded-0">#}
+{#                            <div class="card rounded-0">#}
+{#                                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}">#}
+{#                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">#}
+{#                                    <ul class="list-unstyled">#}
+{#                                    </ul>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="card-body">#}
+{##}
+{#                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">#}
+{#                                    <li> {{ product.name }} </li>#}
+{#                                    <li class="pt-2">#}
+{#                                        <span>{{ product.category }}</span>#}
+{#                                        <span>{{ product.amount }}</span>#}
+{#                                        <span>{{ product.store.username }}</span>#}
+{#                                        <span>{{ product.date_of_product }}</span>#}
+{##}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                                <ul class="list-unstyled d-flex justify-content-center mb-1">#}
+{#                                    <li>#}
+{#                                        <i> Score : {{ rates }}</i>#}
+{##}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                                <p class="text-center mb-0">{{ product.price }}</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        {% endfor %}#}
+{#</div>#}
+{#</div>#}
+{##}
+{#    {% endblock %}#}
 {#  function deleteCartItem(productId) {#}
 {#  $.ajax({#}
 {#    url: '{% url "cart_delete" product.id%}',#}
@@ -91,3 +56,76 @@
 {#  });#}
 
 
+{#<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+{#<script>#}
+{#  function loadCart() {#}
+{#    $.ajax({#}
+{#      url: '{% url "cart_items" %}',#}
+{#      method: 'GET',#}
+{#      success: function(data) {#}
+{#        let html = '';#}
+{#        if(data.length === 0){#}
+{#          html = '<p>Your cart is empty.</p>';#}
+{#        } else {#}
+{#          html += '<ul>';#}
+{#          data.forEach(function(item){#}
+{#            html += '<li>' + item.product + ': ' + item.amount + ' @ ' + item.price + '</li>';#}
+{#          });#}
+{#          html += '</ul>';#}
+{#        }#}
+{#        $('#cart-container').html(html);#}
+{#      },#}
+{#      error: function(xhr, status, error) {#}
+{#        $('#cart-container').html('<p>Error loading cart.</p>');#}
+{#      }#}
+{#    });#}
+{#  }#}
+{##}
+{#  // Load cart on page load#}
+{#  $(document).ready(function() {#}
+{#    loadCart();#}
+{#  });#}
+{#</script>#}
+
+{% extends 'shop.html' %}
+{% load static %}
+
+{% block title %}
+    Cart
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="card mb-4 product-wap rounded-0">
+            <div class="card rounded-0">
+                <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                    <ul class="list-unstyled">
+                        <!-- Optional overlay content -->
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                    <li>{{ product.name }}</li>
+                    <li class="pt-2">
+                        <span>{{ product.category }}</span>
+                        <span>{{ product.amount }}</span>
+                        <span>{{ product.store.username }}</span>
+                        <span>{{ product.date_of_product }}</span>
+                    </li>
+                </ul>
+                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                    <li>
+                        <i>Score: {{ product.rate|default:"N/A" }}</i>
+                    </li>
+                </ul>
+                <p class="text-center mb-0">{{ product.price }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
