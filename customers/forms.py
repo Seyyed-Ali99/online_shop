@@ -59,3 +59,9 @@ class OTPPhoneForm(forms.Form):
 
 class OTPCodeForm(forms.Form):
     otp = forms.CharField(max_length=4, label='received code')
+
+class StaffForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name','last_name','username', 'email','phone_number','role','address']
+

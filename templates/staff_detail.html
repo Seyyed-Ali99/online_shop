@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
+    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% block title %}
+    Staff Detail
+{% endblock %}
+{% block content  %}
+    <p> FIRST NAME : {{ user.first_name }}</p>
+    <p> LAST NAME : {{ user.last_name }}</p>
+    <p> EMAIL : {{ user.email }}</p>
+    <p> PHONE NUMBER : {{ user.phone_number }}</p>
+    <p> Address : {{ user.address }}</p>
+    {% if current_user.role == 'admin' %}
+        <a href="{% url 'staff_edit' pk=user.pk %}"> / EDIT THIS STAFF / </a>
+        <a href="{% url 'staff_delete' pk=user.pk %}">   / Delete This User / </a>
+    {% endif %}
+        <p> Role : {{ user.role }}</p>
+        <p> Store Address : {{ user.store.address }}</p>
+        <p> Store Name : {{ user.store.username }}</p>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'shop.html' %}
+{% load static %}
+{% block title %}
+    Stores Staff
+{% endblock %}
+
+{% block content %}
+    {% for staff in staffs %}
+    <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <div class="card rounded-0">
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                    <li>/ FIRST NAME : {{ staff.first_name }} /</li>
+                                    <li>/ LAST NAME : {{ staff.last_name }} /</li>
+                                    <li class="pt-2">
+                                        <p>/ USERNAME : {{ staff.username }} /</p>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i>/ ROLE : {{ staff.role }} /</i>
+                                        <i>/ EMAIL : {{ staff.email }} /</i>
+                                        <i>/ PHONE NUMBER : {{ staff.phone_number }} /</i>
+
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0"> ADDRESS : {{ staff.address }}</p>
+
+                                    <a href="{% url 'staff_detail' staff.id %}"> DETAILS </a>
+
+                            </div>
+                        </div>
+                    </div>
+    </div>
+    {% endfor %}
+{% endblock %}

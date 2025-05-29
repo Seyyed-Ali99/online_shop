@@ -1,0 +1,16 @@
+{% extends 'index.html' %}  {# or your main template #}
+{% load static %}
+
+{% block title %}Delete Staff Member{% endblock %}
+
+{% block content %}
+<h1>Confirm Delete</h1>
+
+<p>Are you sure you want to delete user: <strong>{{ object.username }}</strong>?</p>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'staff_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

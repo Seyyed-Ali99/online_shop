@@ -7,14 +7,15 @@
     Dashboard Vendor
 {% endblock %}
 {% block content  %}
-    {{ user.first_name }}
-    {{ user.last_name }}
-    {{ user.email }}
-    {{ user.phone_number }}
+    <p> FIRST NAME : {{ user.first_name }}</p>
+    <p> LAST NAME : {{ user.last_name }}</p>
+    <p> EMAIL : {{ user.email }}</p>
+    <p> PHONE NUMBER : {{ user.phone_number }}</p>
     <a href="{% url 'update_user' %}">/ update_user /</a>
     <a href="{% url 'logout' %}">/ logout /</a>
     <a href="{% url 'shop_orders' %}">/ our orders /</a>
     <a href="{% url 'shop_products' %}">/ PRODUCTS /</a>
+    <a href="{% url 'staff_list' %}"> / STAFF /</a>
     {% if user.role == 'admin' %}
         <p> Address : {{ user.address }}</p>
         <p> Store Name : {{ user.username }}</p>

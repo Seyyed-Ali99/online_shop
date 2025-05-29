@@ -5,12 +5,12 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
 from accounts.models import User
 from product.models import Product,Comment
-from .forms import UserRegisterForm, EmailLoginForm, OTPPhoneForm
+from .forms import UserRegisterForm, EmailLoginForm, OTPPhoneForm,StaffForm
 from django.contrib.auth.views import LogoutView , LoginView
 from django.views import View
 from django.contrib.auth import authenticate , login , logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView , DetailView , CreateView , UpdateView,FormView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, FormView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import OTPPhoneForm,OTPCodeForm
@@ -192,6 +192,38 @@ class ShopProducts(View):
             return render(request,self.template_name, context={'products':product})
         else:
             return HttpResponseForbidden()
+
+
+class StaffList(View):
+    def get(self,request,*args,**kwargs):
+        current_user = self.request.user
+        if self.request.user.role == "admin":
+            staff = User.objects.filter(store=current_user.id)
+            return render(request,"staff_list.html",context={'staffs':staff })
+        elif self.request.user.role == "manager" or self.request.user.role == "operator":
+            staff = User.objects.filter(store=current_user.store)
+            return render(request,"staff_list.html",context={'staffs':staff})
+        else:
+            return HttpResponseForbidden()
+
+class StaffDetail(LoginRequiredMixin,View):
+    login_url = 'email_login'
+    def get(self,request,*args,**kwargs):
+        current_user = self.request.user
+        user = User.objects.get(id=kwargs['id'])
+        return render(request,"staff_detail.html",context={'user':user,'current_user':current_user})
+
+class StaffUpdate(LoginRequiredMixin,UpdateView):
+    login_url = 'email_login'
+    model = User
+    form_class = StaffForm
+    template_name = 'staff_update.html'
+    success_url = reverse_lazy('staff_list')
+
+class DeleteStaff(LoginRequiredMixin,DeleteView):
+    model = User
+    success_url = reverse_lazy('staff_list')
+    template_name = 'delete_staff.html'
 
 
 
