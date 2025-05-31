@@ -1,7 +1,8 @@
 
 from django.urls import path
 from .views import EmailLoginView, OTPLogin, OTPVerify, RegisterView, UpdateUserView, DashboardUserView, \
-    CustomLogoutView, StoresList, StoresDetail, StoresProducts, ShopProducts, StaffList, StaffDetail, StaffUpdate,DeleteStaff
+    CustomLogoutView, StoresList, StoresDetail, StoresProducts, ShopProducts, StaffList, StaffDetail, StaffUpdate, \
+    DeleteStaff, AddStaff
 
 urlpatterns = [
     path("register/",RegisterView.as_view(),name='register'),
@@ -22,6 +23,7 @@ urlpatterns = [
     path("staff/<int:id>",StaffDetail.as_view(),name='staff_detail'),
     path("staff/<int:pk>/edit/",StaffUpdate.as_view(),name='staff_edit'),
     path("staff/<int:pk>/delete/",DeleteStaff.as_view(),name='staff_delete'),
+    path("staff/add/",AddStaff.as_view(),name='staff_add'),
     # path("vendor_dashboard/<int:id>",DashboardVendorView.as_view(),name='vendor_dashboard'),
     #
 ]

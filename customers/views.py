@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
 from accounts.models import User
 from product.models import Product,Comment
-from .forms import UserRegisterForm, EmailLoginForm, OTPPhoneForm,StaffForm
+from .forms import UserRegisterForm, EmailLoginForm, OTPPhoneForm,StaffForm,UpdateUserForm,AdminCustomerRegisterForm,AddStaffForm
 from django.contrib.auth.views import LogoutView , LoginView
 from django.views import View
 from django.contrib.auth import authenticate , login , logout
@@ -101,7 +101,7 @@ class OTPVerify(FormView):
 
 class RegisterView(CreateView):
     model = User
-    form_class = UserRegisterForm
+    form_class = AdminCustomerRegisterForm
     template_name = 'register.html'
     success_url = reverse_lazy('email_login')
 
@@ -141,7 +141,7 @@ class DashboardUserView(LoginRequiredMixin,View):
 class UpdateUserView(LoginRequiredMixin,UpdateView):
     login_url = 'email_login'
     model = User 
-    form_class = UserRegisterForm  
+    form_class = UpdateUserForm
     template_name = 'update_user.html'  
     success_url = reverse_lazy('dashboard_user')
 
@@ -225,5 +225,14 @@ class DeleteStaff(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy('staff_list')
     template_name = 'delete_staff.html'
 
+class AddStaff(LoginRequiredMixin,CreateView):
+    model = User
+    form_class = AddStaffForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('staff_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request  # pass request to form for role logic
+        return kwargs
 

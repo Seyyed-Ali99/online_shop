@@ -171,6 +171,17 @@ class ShopOrders(APIView):
         else:
             return JsonResponse({'error': ' You have no permission to view .'}, status=403)
 
+class CustomerOrders(APIView):
+    permission_classes = [IsAuthenticated]
+    login_url = 'email_login'
+    def get(self, request):
+        current_user = self.request.user
+        orders = Order.objects.filter(order_items__customer_id=current_user.id).order_by('-id')
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+
 
 # class OrderUpdateView(LoginRequiredMixin,UpdateView):
 #     model = Order
@@ -182,11 +193,11 @@ class ShopOrders(APIView):
 #         messages.success(self.request, 'Item successfully updated!')
 #         return super().form_valid(form)
 
-class OrderUpdateView(APIView):
-    model = Order
-    template_name = 'order_update.html'
-    fields = ["date_of_deliver","discount","address","orderitem_id"]  # Specify fields you want to be editable
-    success_url = reverse_lazy('order_list')  # Redirect after update
+# class OrderUpdateView(APIView):
+#     model = Order
+#     template_name = 'order_update.html'
+#     fields = ["date_of_deliver","discount","address","orderitem_id"]
+#     success_url = reverse_lazy('order_list')
 
 
 
