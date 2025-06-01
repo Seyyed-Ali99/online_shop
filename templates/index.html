@@ -245,7 +245,7 @@ https://templatemo.com/tm-559-zay-shop
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="{% static 'img/category_img_01.jpg'%}" class="rounded-circle img-fluid border"></a>
                 <h5 class="text-center mt-3 mb-3">Arts</h5>
-                <p class="text-center"><a class="btn btn-success" href=""> See </a></p>
+                <p class="text-center"><a class="btn btn-success" href="/"> See </a></p>
             </div>
             <div class="col-12 col-md-4 p-5 mt-3">
                 <a href="#"><img src="{% static 'img/category_img_02.jpg' %}" class="rounded-circle img-fluid border"></a>
@@ -277,7 +277,7 @@ https://templatemo.com/tm-559-zay-shop
             <div class="row">
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
+                        <a href="{% url 'shop' %}?category=Digital_Device">
                             <img src="{% static 'img/3b8dd6eb74072fa137636bb53d643389.jpg' %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
@@ -286,12 +286,12 @@ https://templatemo.com/tm-559-zay-shop
                                     <i class="text-warning fa fa-star"></i>
                                     <i class="text-warning fa fa-star"></i>
                                     <i class="text-warning fa fa-star"></i>
-                                    <i class="text-muted fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
                                     <i class="text-muted fa fa-star"></i>
                                 </li>
                                 <li class="text-muted text-right">$240.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Digital Devices</a>
+                            <a href="{% url 'shop' %}?category=Digital_Device" class="h2 text-decoration-none text-dark">Digital Devices</a>
                             <p class="card-text">
                                 Visit Digital Devices page here
                             </p>
@@ -301,8 +301,8 @@ https://templatemo.com/tm-559-zay-shop
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="{% static 'img/feature_prod_02.jpg' %}" class="card-img-top" alt="...">
+                        <a href="{% url 'shop' %}?category=Apple">
+                            <img src="{% static 'img/cdcdabfb9b5259236eb5b6a7d4f17666.jpg' %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <ul class="list-unstyled d-flex justify-content-between">
@@ -315,9 +315,9 @@ https://templatemo.com/tm-559-zay-shop
                                 </li>
                                 <li class="text-muted text-right">$480.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">Accessories</a>
+                            <a href="{% url 'shop' %}?category=Apple" class="h2 text-decoration-none text-dark">Apple</a>
                             <p class="card-text">
-                                Check our epic accessories .
+                                Check Apple top products  .
                             </p>
                             <p class="text-muted">Reviews (48)</p>
                         </div>
@@ -325,8 +325,8 @@ https://templatemo.com/tm-559-zay-shop
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                     <div class="card h-100">
-                        <a href="shop-single.html">
-                            <img src="{% static 'img/4f69107f68efa0095e6455f88a737f1f.jpg' %}" class="card-img-top" alt="...">
+                        <a href="{% url 'shop' %}?category=Art">
+                            <img src="{% static 'img/797db10a22feb014f5c882a9c13990f3.jpg' %}" class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <ul class="list-unstyled d-flex justify-content-between">
@@ -339,7 +339,7 @@ https://templatemo.com/tm-559-zay-shop
                                 </li>
                                 <li class="text-muted text-right">$360.00</li>
                             </ul>
-                            <a href="shop-single.html" class="h2 text-decoration-none text-dark"> Art Equipments </a>
+                            <a href="{% url 'shop' %}?category=Art" class="h2 text-decoration-none text-dark"> Art </a>
                             <p class="card-text">
                                 Try our Artistic Instruments and Equipments .
                             </p>

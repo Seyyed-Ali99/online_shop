@@ -118,6 +118,21 @@ class AddComment(LoginRequiredMixin,View):
     login_url = 'email_login'
     template_name = 'add_comment.html'
 
+    # def get(self,request):
+    #     form = CommentForm()
+    #     return render(request,self.template_name,{"form":form})
+    #
+    # def post(self,request,*args,**kwargs):
+    #     form = CommentForm(request.POST)
+    #     if form.is_valid():
+    #         comment = form.save(commit=False)
+    #         comment.user = self.request.user
+    #         comment.related_product = get_object_or_404(Product,id=kwargs['id'])
+    #         comment.save()
+    #         return redirect('comments_list')
+    #     else :
+    #         return redirect('shop')
+
     def get(self,request,*args,**kwargs):
         form = CommentForm(initial={'related_product':Product.objects.get(id=kwargs['id']),'user':request.user})
         return render(request,self.template_name,{"form":form})
@@ -127,10 +142,13 @@ class AddComment(LoginRequiredMixin,View):
 
         if form.is_valid():
             form.save()
-            return redirect('comments_list')
+            product = Product.objects.get(id=kwargs['id'])
+            return redirect('product_detail', product.id)
         else :
             return redirect('shop')
-        
+
+
+
 class CommentList(LoginRequiredMixin,View):
     login_url = 'email_login'
     def get(self,request):
