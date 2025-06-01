@@ -25,11 +25,11 @@ class CartView(APIView):
             if str(product_id) in cart:
                 cart[str(product_id)]['quantity'] += quantity
                 print("adding amount to cart")
-                related_product.amount -= 1
+
             else:
                 cart[str(product_id)] = {'quantity': quantity}
                 print("adding product to cart")
-                related_product.amount -= 1
+
 
             request.session['cart'] = cart
             # print(cart)
