@@ -233,6 +233,6 @@ class AddStaff(LoginRequiredMixin,CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request  # pass request to form for role logic
+        kwargs['request'] = self.request  
         return kwargs
 

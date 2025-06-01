@@ -148,7 +148,7 @@ https://templatemo.com/tm-559-zay-shop
                     <li class="pb-3">
 
                         <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="">
-                            Gender
+                            Categories
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul class="collapse show list-unstyled pl-3">
@@ -157,27 +157,27 @@ https://templatemo.com/tm-559-zay-shop
                             {% endfor %}
                         </ul>
                     </li>
-                    <li class="pb-3">
-                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                            Sale
-                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                        </a>
-                        <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="#">Sport</a></li>
-                            <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                        </ul>
-                    </li>
-                    <li class="pb-3">
-                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                            Product
-                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                        </a>
-                        <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="#">Bag</a></li>
-                            <li><a class="text-decoration-none" href="#">Sweather</a></li>
-                            <li><a class="text-decoration-none" href="#">Sunglass</a></li>
-                        </ul>
-                    </li>
+{#                    <li class="pb-3">#}
+{#                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">#}
+{#                            Sale#}
+{#                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>#}
+{#                        </a>#}
+{#                        <ul id="collapseTwo" class="collapse list-unstyled pl-3">#}
+{#                            <li><a class="text-decoration-none" href="#">Sport</a></li>#}
+{#                            <li><a class="text-decoration-none" href="#">Luxury</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li class="pb-3">#}
+{#                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">#}
+{#                            Product#}
+{#                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>#}
+{#                        </a>#}
+{#                        <ul id="collapseThree" class="collapse list-unstyled pl-3">#}
+{#                            <li><a class="text-decoration-none" href="#">Bag</a></li>#}
+{#                            <li><a class="text-decoration-none" href="#">Sweather</a></li>#}
+{#                            <li><a class="text-decoration-none" href="#">Sunglass</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
                 </ul>
             </div>
 
@@ -214,9 +214,7 @@ https://templatemo.com/tm-559-zay-shop
                                 <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}" alt="product_image">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
-{#                                        <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>#}
                                         <li><a class="btn btn-success text-white mt-2" href="{% url 'product_detail' product.id %}"><i class="far fa-eye"></i></a></li>
-{#                                        <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="fas fa-cart-plus"></i></a></li>#}
                                     </ul>
                                 </div>
                             </div>
@@ -234,14 +232,10 @@ https://templatemo.com/tm-559-zay-shop
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
+                                        <p> Score : {{ product.rate }}</p>
                                     </li>
                                 </ul>
-                                <p class="text-center mb-0">{{ product.price }}</p>
+                                <p class="text-center mb-0"> $ {{ product.price }}</p>
                             </div>
                         </div>
                     </div>

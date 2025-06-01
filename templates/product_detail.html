@@ -35,17 +35,21 @@
                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                         <li>{{ product.name }}</li>
                         <li class="pt-2">
-                            <span>{{ product.category }}</span>
-                            <span>{{ product.amount }}</span>
-                            <span>{{ product.store.username }}</span>
-                            <span>{{ product.date_of_product }}</span>
-                            <a href="{% url 'add_comment' id=product.id %}">Comment</a>
+                            <span> {{ product.category }} </span>
+                            <span> {{ product.amount }} </span>
+
+                            <span> {{ product.store.username }} </span>
+
+                           <p>  {{ product.date_of_product }} </p>
+                            <a href="{% url 'add_comment' id=product.id %}" class="btn-outline-primary">Comment</a>
                         </li>
                     </ul>
                     <ul class="list-unstyled d-flex justify-content-center mb-1">
-                        <li><i>Score: {{ rates }}</i></li>
+                        {% if not product.rate == 0 %}
+                            <li><i>Score: {{ rates }}</i></li>
+                        {% endif %}
                     </ul>
-                    <p class="text-center mb-0">{{ product.price }}</p>
+                    <p class="text-center mb-0"> $ {{ product.price }}</p>
                 </div>
             </div>
         </div>

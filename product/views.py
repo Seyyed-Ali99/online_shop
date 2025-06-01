@@ -55,10 +55,13 @@ class ProductDetail(View):
         rates = Rate.objects.filter(product=product)
         sum = 0
         ratings = 0
-        for rate in rates:
-            ratings += rate.rate
-            sum += 1
-        avg = ratings / sum
+        try:
+            for rate in rates:
+                ratings += rate.rate
+                sum += 1
+            avg = ratings / sum
+        except:
+            avg = 0
 
         context = {'product':product,'rates':avg,'comments':comments}
 
