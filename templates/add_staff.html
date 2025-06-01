@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Add Staff
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4">Add a New Staff</h2>
+  <form method="post" action="" class="bg-light p-4 rounded shadow-sm">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      {{ form.first_name.label_tag }}
+      {{ form.first_name}}
+      {{ form.last_name.label_tag }}
+      {{ form.last_name}}
+      {{ form.username.label_tag }}
+      {{ form.username}}
+      {{ form.phone_number.label_tag }}
+      {{ form.phone_number}}
+
+
+    </div>
+
+    <div class="mb-3">
+      {{ form.email.label_tag }}
+      {{ form.email}}
+
+      {{ form.role.label_tag }}
+      {{ form.role}}
+      {{ form.password1.label_tag }}
+      {{ form.password1}}
+      {{ form.password2.label_tag }}
+      {{ form.password2}}
+    </div>
+      {{ form.address.label_tag }}
+      {{ form.address}}
+      {{ form.store.as_hidden }}
+
+
+    <button type="submit" class="btn btn-primary mt-3">Add Staff </button>
+    <a href="{% url 'dashboard_user' %}" class="btn btn-secondary mt-3 ms-2">Back to Dashboard</a>
+  </form>
+</div>
+{% endblock %}

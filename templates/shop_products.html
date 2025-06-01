@@ -43,7 +43,9 @@
                                         </li>
                                     </ul>
                                     <p class="text-center mb-0">{{ product.price }}</p>
-                                    <a href="{% url 'edit_product' product.pk %}"> Edit </a>
+                                    {% if user.role == 'admin' or user.role == 'manager' %}
+                                        <a href="{% url 'edit_product' product.pk %}"> Edit </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

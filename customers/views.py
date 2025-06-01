@@ -186,10 +186,10 @@ class ShopProducts(View):
         current_user = self.request.user
         if self.request.user.role == "manager" or self.request.user.role == "operator":
             product = Product.objects.filter(store=current_user.store)
-            return render(request,self.template_name, context={'products':product})
+            return render(request,self.template_name, context={'products':product,'user':self.request.user})
         elif self.request.user.role == "admin":
             product = Product.objects.filter(store=current_user.id)
-            return render(request,self.template_name, context={'products':product})
+            return render(request,self.template_name, context={'products':product,'user':self.request.user})
         else:
             return HttpResponseForbidden()
 
@@ -228,7 +228,7 @@ class DeleteStaff(LoginRequiredMixin,DeleteView):
 class AddStaff(LoginRequiredMixin,CreateView):
     model = User
     form_class = AddStaffForm
-    template_name = 'register.html'
+    template_name = 'add_staff.html'
     success_url = reverse_lazy('staff_list')
 
     def get_form_kwargs(self):
