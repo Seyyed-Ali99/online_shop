@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'index.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}
+    Update Order
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4">Update the order </h2>
+  <form method="post" action="" class="bg-light p-4 rounded shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary mt-3">Update</button>
+    <a href="{% url 'shop_orders' %}" class="btn btn-secondary mt-3 ms-2">Back to Shop</a>
+  </form>
+</div>
+{% endblock %}

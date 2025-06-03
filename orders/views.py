@@ -6,6 +6,7 @@ from django.db.models.functions import datetime
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import UpdateView
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -13,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+
+from .forms import PayForm, OrderUpdateForm
 from .models import Order, OrderItem
 from product.models import Product
 from accounts.models import User
@@ -211,6 +214,21 @@ class ShopOrders(LoginRequiredMixin,View):
             return render(request,'store_orders.html',context={'orders': orders})
         else:
             return HttpResponseForbidden()
+
+
+# class Purchase(LoginRequiredMixin,UpdateView):
+#     login_url = 'email_login'
+#     template_name = 'order_detail.html'
+#     model = Order
+#     form_class = PayForm
+#     success_url = reverse_lazy('order_list')
+
+class OrderUpdateView(LoginRequiredMixin,UpdateView):
+    login_url = 'email_login'
+    form_class = OrderUpdateForm
+    model = Order
+    template_name = 'order_update.html'
+    success_url = reverse_lazy('shop_orders')
 
 # class CustomerOrders(APIView):
 #     permission_classes = [IsAuthenticated]

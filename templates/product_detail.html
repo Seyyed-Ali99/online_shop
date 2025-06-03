@@ -69,6 +69,23 @@
             </div>
             {% endfor %}
         </div>
+        <div class="container my-5">
+                <h2 class="mb-4">Add your rate </h2>
+                <form method="post" action="" class="bg-light p-4 rounded shadow-sm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                      {{ form.rate }}
+
+                    </div>
+
+                    {{ form.user.as_hidden }}
+                    {{ form.product.as_hidden }}
+
+                    <button type="submit" class="btn btn-primary mt-3"> Rate </button>
+                    <a href="{% url 'shop' %}" class="btn btn-secondary mt-3 ms-2">Back to Shop</a>
+                </form>
+        </div>
     </div>
 
     <!-- jQuery for AJAX -->

@@ -23,14 +23,9 @@
                         <div class="card rounded-0">
                             <img class="card-img rounded-0 img-fluid" src="{{ order_item.product_id.image.url }}" alt="orderitem_image">
                             <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <!-- Button to add to cart -->
-{#                                        <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">#}
-{#                                            <i class="fas fa-cart-plus"></i> Add to Cart#}
-{#                                        </button>#}
-                                    </li>
-                                </ul>
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'product_detail' order_item.product_id.id %}"><i class="far fa-eye"></i></a></li>
+                                    </ul>
                             </div>
                         </div>
                         <div class="card-body">
@@ -63,19 +58,21 @@
                                 <li class="pt-2">
                                     <i><span><strong>Status :</strong> {{ order.status }} </span></i>
                                     <i><span><strong>Customer :</strong> {{ order.customer_id }} </span></i>
-
+                                    <i><span><strong>Address :</strong> {{ order.address }} </span></i>
                                     <i><span><strong>Total Price :</strong> {{ order.total_price }} </span></i>
 
 
 {#                                    <a href="{% url 'add_rate' id=product.id %}" class="btn-outline-primary">Comment</a>#}
                                 </li>
+
                             </ul>
-{#                            <ul class="list-unstyled d-flex justify-content-center mb-1">#}
-{#                                {% if not product.rate == 0 %}#}
-{#                                    <li><i>Score: {{ order_item.product_id.rates }}</i></li>#}
-{#                                {% endif %}#}
-{#                            </ul>#}
-{#                            <p class="text-center mb-0"> $ {{ order_item.product_id.price }}</p>#}
-                        </div>
+{#                                <form method="post" action="">#}
+{#                                    {{ message }}#}
+{#                                    {% csrf_token %}#}
+{#                                    {{ form.as_p }}#}
+{#                                    <button type="submit" href="{% url 'purchase' order.id %}">Pay</button>#}
+{#                                </form>#}
+
+        </div>
 
 {% endblock %}

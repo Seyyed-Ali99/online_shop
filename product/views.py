@@ -1,5 +1,7 @@
 from django.shortcuts import render , redirect
 from unicodedata import category
+
+from orders.models import Order, OrderItem
 from .forms import CategoryForm , ProductForm , CommentForm,RateForm
 from .models import Category , Product , Comment,Rate
 from django.http import HttpResponse , HttpResponseBadRequest
@@ -159,14 +161,24 @@ class CommentDetail(View):
 class AddRate(LoginRequiredMixin,View):
     login_url = 'email_login'
     def get(self,request,*args,**kwargs):
+        user = self.request.user
         product = Product.objects.get(id=kwargs['id'])
-        rateform = RateForm()
-        return render(request,"shop-single.html",context={"rateform":rateform,"product":product})
+        rateform = RateForm(initial={'product':product,'user':user})
+        return render(request,"product_detail.html",context={"form":rateform,"product":product})
 
-    def post(self,request):
-        rateform = RateForm(request.POST)
-        if rateform.is_valid():
-            rateform.save()
-            return redirect('order_detail')
+    def post(self,request,*args,**kwargs):
+        product = Product.objects.get(id=kwargs['id'])
+        related_order = Order.objects.filter(customer_id=request.user)
+        order_product = OrderItem.objects.get(product=product,order=related_order,is_paid=True)
+
+
+        if order_product :
+            rateform = RateForm(request.POST,initial={'product':product,'user':request.user})
+            if rateform.is_valid():
+                rateform.save()
+                return redirect('order_detail')
+            else:
+                return HttpResponseBadRequest(reverse_lazy('product_detail', product.id))
         else:
-            return HttpResponseBadRequest()
+            # return redirect('product_detail', product.id)
+            return render(request,'product_detail.html',{'message':"You haven't ordered this Product yet "})
