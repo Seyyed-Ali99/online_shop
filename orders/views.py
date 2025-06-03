@@ -17,7 +17,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 
 from .forms import PayForm, OrderUpdateForm
 from .models import Order, OrderItem
-from product.models import Product
+from product.models import Product, Rate
 from accounts.models import User
 from .serializers import OrderSerializer
 
@@ -192,13 +192,45 @@ class OrderDetailView(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         order = Order.objects.get(id=kwargs['id'])
         order_items = OrderItem.objects.filter(order=order)
-        # products = Product.objects.filter(id=order_items.product_id)
-        total_price = 0
-        for order_item in order_items:
-            total_price += order_item.product_id.price * order_item.amount
 
+        all_rates = Rate.objects.filter(product__in=[item.product_id for item in order_items])
+
+        total_rates = all_rates.count()
+        sum_rates = sum(rate.rate for rate in all_rates) if total_rates > 0 else 0
+        avg_rate = round(sum_rates / total_rates,1) if total_rates > 0 else 0
+
+        # Calculate total price
+        total_price = sum(item.product_id.price * item.amount for item in order_items)
+
+        # Update order's total_price if needed
         order.total_price = total_price
-        return render(request,"order_detail.html",context={'order': order,'order_items': order_items})
+        order.save()
+
+        return render(request, "order_detail.html", {
+            'order': order,
+            'order_items': order_items,
+            'rate': avg_rate,
+        })
+
+        # products = Product.objects.filter(id=order_items.product_id)
+        # rates = Rate.objects.filter(product=order_items.product_id.id)
+        # sum = 0
+        # ratings = 0
+        # try:
+        #     for rate in rates:
+        #         ratings += rate.rate
+        #         sum += 1
+        #     avg = ratings / sum
+        # except:
+        #     avg = 0
+        #
+        #
+        # total_price = 0
+        # for order_item in order_items:
+        #     total_price += order_item.product_id.price * order_item.amount
+        #
+        # order.total_price = total_price
+        # return render(request,"order_detail.html",context={'order': order,'order_items': order_items,'rate':avg})
 
 class ShopOrders(LoginRequiredMixin,View):
     login_url = 'email_login'

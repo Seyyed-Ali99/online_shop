@@ -1,78 +1,69 @@
 {% extends 'shop.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Order Detail{% endblock %}</title>
-    <!-- Include Font Awesome for icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Add your CSS here -->
+{% block title %}Order Detail{% endblock %}
 
-</head>
-<body>
-    <p>Order : {{ order.id }}</p>
-    {% block content %}
-        {% for order_item in order_items %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Order #{{ order.id }}</h2>
 
-            <div class="row">
-                <!-- Product Card -->
-                <div class="col-md-4">
-                    <div class="card mb-4 product-wap rounded-0">
-                        <div class="card rounded-0">
-                            <img class="card-img rounded-0 img-fluid" src="{{ order_item.product_id.image.url }}" alt="orderitem_image">
-                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-                                        <li><a class="btn btn-success text-white mt-2" href="{% url 'product_detail' order_item.product_id.id %}"><i class="far fa-eye"></i></a></li>
-                                    </ul>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                <li>{{ order_item.product_id.name }}</li>
-                                <li class="pt-2">
-                                    <i><span><strong>Category :</strong> {{ order_item.product_id.category }} </span></i>
-                                    <i><span><strong>Amount :</strong> {{ order_item.amount }} </span></i>
-
-                                    <i><span><strong>Store :</strong> {{ order_item.product_id.store.username }} </span></i>
-
-
-{#                                    <a href="{% url 'add_rate' id=product.id %}" class="btn-outline-primary">Comment</a>#}
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                {% if not product.rate == 0 %}
-                                    <li><i>Score: {{ order_item.product_id.rates }}</i></li>
-                                {% endif %}
-                            </ul>
-                            <p class="text-center mb-0"> $ {{ order_item.product_id.price }}</p>
-                        </div>
-                    </div>
+    <!-- Order Items -->
+<div class="row gy-4">
+    {% for order_item in order_items %}
+    <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card mb-4 product-wap rounded-0 shadow-sm hover-shadow">
+            <div class="card rounded-0">
+                <img src="{{ order_item.product_id.image.url }}" class="card-img-top rounded-0 img-fluid" alt="Product Image">
+                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center bg-dark bg-opacity-50 opacity-0 hover-opacity-100 transition-opacity">
+                    <a href="{% url 'product_detail' order_item.product_id.id %}" class="btn btn-success text-white"><i class="far fa-eye"></i> View</a>
                 </div>
             </div>
-        {% endfor %}
-        <div class="card-body">
-                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                <li>{{ order.delivery_date }}</li>
-                                <li class="pt-2">
-                                    <i><span><strong>Status :</strong> {{ order.status }} </span></i>
-                                    <i><span><strong>Customer :</strong> {{ order.customer_id }} </span></i>
-                                    <i><span><strong>Address :</strong> {{ order.address }} </span></i>
-                                    <i><span><strong>Total Price :</strong> {{ order.total_price }} </span></i>
-
-
-{#                                    <a href="{% url 'add_rate' id=product.id %}" class="btn-outline-primary">Comment</a>#}
-                                </li>
-
-                            </ul>
-{#                                <form method="post" action="">#}
-{#                                    {{ message }}#}
-{#                                    {% csrf_token %}#}
-{#                                    {{ form.as_p }}#}
-{#                                    <button type="submit" href="{% url 'purchase' order.id %}">Pay</button>#}
-{#                                </form>#}
-
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ order_item.product_id.name }}</h5>
+                <ul class="list-unstyled mb-3">
+                    <li><strong>Category:</strong> {{ order_item.product_id.category }}</li>
+                    <li><strong>Amount:</strong> {{ order_item.amount }}</li>
+                    <li><strong>Store:</strong> {{ order_item.product_id.store.username }}</li>
+                </ul>
+                {% if order_item.product_id.rates != 0 %}
+                <div class="mb-2">
+                    <span class="badge bg-warning text-dark">Score: {{ rate }}</span>
+                </div>
+                {% endif %}
+                <p class="text-center fw-bold fs-5 mb-0">${{ order_item.product_id.price }}</p>
+            </div>
         </div>
+    </div>
+    {% endfor %}
+</div>
 
+<!-- Order Summary -->
+<div class="card mt-5 shadow-rounded p-4">
+    <h4 class="mb-3 text-center">Order Summary</h4>
+    <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Delivery Date:</strong> {{ order.delivery_date }}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Status:</strong> {{ order.status }}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Customer:</strong> {{ order.customer_id.username }}
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Address:</strong> {{ order.address }}
+        </li>
+        <li class="list-group-item d-flex justify-content-between fw-bold fs-5 bg-light">
+            <span>Total Price:</span> <span>${{ order.total_price }}</span>
+        </li>
+    </ul>
+    {# Uncomment if payment or comment sections are needed #}
+
+{#    <form method="post" action="{% url 'purchase' order.id %}">#}
+{#        {% csrf_token %}#}
+{#        <button type="submit" class="btn btn-primary w-100">Pay Now</button>#}
+{#    </form>#}
+{#    #}
+</div>
+</div>
 {% endblock %}
