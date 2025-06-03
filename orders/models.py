@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.functions import datetime
+
 from accounts.models import User
 from product.models import Product
 
@@ -7,8 +9,8 @@ STATUS_CHOICES = [("waiting","waiting"),("on_deliver","on_deliver"),("canceled",
 class Order(models.Model):
     customer_id = models.ForeignKey(User,on_delete=models.DO_NOTHING,default=None,blank=False,null=False)
     address = models.CharField(max_length=250,blank=False,null=False)  
-    date_of_deliver = models.DateField(blank=False,null=False)
-    total_price = models.DecimalField(max_digits=10,decimal_places=2, blank=False,null=False)
+    date_of_deliver = models.DateField(blank=False,null=False,default=datetime.datetime.now())
+    total_price = models.DecimalField(max_digits=10,decimal_places=2, blank=False,null=False,default=0)
     discount = models.IntegerField()
     is_paid = models.BooleanField(blank=False,null=False,default=False)
     status = models.CharField(max_length=100,blank=False,null=False,choices=STATUS_CHOICES,default="waiting")

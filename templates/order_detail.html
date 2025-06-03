@@ -1,10 +1,81 @@
+{% extends 'shop.html' %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Order Detail{% endblock %}</title>
+    <!-- Include Font Awesome for icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add your CSS here -->
+
 </head>
 <body>
+    <p>Order : {{ order.id }}</p>
+    {% block content %}
+        {% for order_item in order_items %}
 
-</body>
-</html>
+            <div class="row">
+                <!-- Product Card -->
+                <div class="col-md-4">
+                    <div class="card mb-4 product-wap rounded-0">
+                        <div class="card rounded-0">
+                            <img class="card-img rounded-0 img-fluid" src="{{ order_item.product_id.image.url }}" alt="orderitem_image">
+                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <!-- Button to add to cart -->
+{#                                        <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">#}
+{#                                            <i class="fas fa-cart-plus"></i> Add to Cart#}
+{#                                        </button>#}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                <li>{{ order_item.product_id.name }}</li>
+                                <li class="pt-2">
+                                    <i><span><strong>Category :</strong> {{ order_item.product_id.category }} </span></i>
+                                    <i><span><strong>Amount :</strong> {{ order_item.amount }} </span></i>
+
+                                    <i><span><strong>Store :</strong> {{ order_item.product_id.store.username }} </span></i>
+
+
+{#                                    <a href="{% url 'add_rate' id=product.id %}" class="btn-outline-primary">Comment</a>#}
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                {% if not product.rate == 0 %}
+                                    <li><i>Score: {{ order_item.product_id.rates }}</i></li>
+                                {% endif %}
+                            </ul>
+                            <p class="text-center mb-0"> $ {{ order_item.product_id.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="card-body">
+                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                <li>{{ order.delivery_date }}</li>
+                                <li class="pt-2">
+                                    <i><span><strong>Status :</strong> {{ order.status }} </span></i>
+                                    <i><span><strong>Customer :</strong> {{ order.customer_id }} </span></i>
+
+                                    <i><span><strong>Total Price :</strong> {{ order.total_price }} </span></i>
+
+
+{#                                    <a href="{% url 'add_rate' id=product.id %}" class="btn-outline-primary">Comment</a>#}
+                                </li>
+                            </ul>
+{#                            <ul class="list-unstyled d-flex justify-content-center mb-1">#}
+{#                                {% if not product.rate == 0 %}#}
+{#                                    <li><i>Score: {{ order_item.product_id.rates }}</i></li>#}
+{#                                {% endif %}#}
+{#                            </ul>#}
+{#                            <p class="text-center mb-0"> $ {{ order_item.product_id.price }}</p>#}
+                        </div>
+
+{% endblock %}
