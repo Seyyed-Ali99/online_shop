@@ -11,6 +11,6 @@ class PayForm(forms.ModelForm):
 class OrderUpdateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['is_paid','status','date_of_deliver']
+        fields = ['is_paid','status','date_of_deliver','discount']
 
 

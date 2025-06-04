@@ -72,6 +72,7 @@
                                 <li><strong>Customer:</strong> {{ order.customer_id.username }}</li>
                                 <li><strong>Address:</strong> {{ order.address }}</li>
                                 <li><strong>Date of Delivery:</strong> {{ order.date_of_deliver|date:"Y-m-d" }}</li>
+                                <li><strong>Discount:</strong>{{ order.discount }}</li>
                                 <!-- Add other order/info details here as needed -->
                             </ul>
                             <p class="fw-bold fs-4 mb-0">Total Price: ${{ order.total_price }}</p>

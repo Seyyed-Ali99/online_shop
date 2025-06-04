@@ -1,0 +1,97 @@
+{% extends 'shop.html' %}
+{% load static %}
+
+{% block title %}RateProduct{% endblock %}
+
+{% block content %}
+{#<div class="container py-5">#}
+{#    <div class="row">#}
+{#        <!-- Product Card -->#}
+{#        <div class="col-md-4 mb-4">#}
+{#            <div class="card product-wap rounded-0 shadow-sm hover-shadow">#}
+{#                <div class="card">#}
+{#                    <img src="{{ product.image.url }}" class="card-img-top rounded-0 img-fluid" alt="{{ product.name }}">#}
+{#                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">#}
+{#                        <ul class="list-unstyled">#}
+{#                            <li>#}
+{#                                <!-- Button to add to cart -->#}
+{#                                <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">#}
+{#                                    <i class="fas fa-cart-plus"></i> Add to Cart#}
+{#                                </button>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="card-body text-center">#}
+{#                    <h4 class="card-title mb-2">{{ product.name }}</h4>#}
+{#                    <ul class="list-unstyled mb-3">#}
+{#                        <li><strong>Category:</strong> {{ product.category }}</li>#}
+{#                        <li><strong>Amount:</strong> {{ product.amount }}</li>#}
+{#                        <li><strong>Store:</strong> {{ product.store.username }}</li>#}
+{#                        <li><strong>Date of Product:</strong> {{ product.date_of_product }}</li>#}
+{#                    </ul>#}
+{#                    {% if not product.rate == 0 %}#}
+{#                        <div class="mb-3">#}
+{#                            <span class="badge bg-warning text-dark">Score: {{ rates }}</span>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                    <h5 class="text-primary mb-0">${{ product.price }}</h5>#}
+{#                    <a href="{% url 'add_comment' id=product.id %}" class="btn btn-outline-primary btn-sm mt-3">Comment</a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <!-- Comments Section -->#}
+{#        <div class="col-md-8 mb-4">#}
+{#            <h3 class="mb-4">Comments</h3>#}
+{#            {% for comment in comments %}#}
+{#            <div class="card mb-3 shadow-sm rounded-0">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title">Title: {{ comment.title }}</h5>#}
+{#                    <p class="mb-2"><strong>User:</strong> {{ comment.user }}</p>#}
+{#                    <p><strong>Comment:</strong> {{ comment.comment_body }}</p>#}
+{#                </div>#}
+{#            </div>#}
+{#            {% empty %}#}
+{#            <p class="text-muted">No comments yet.</p>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <!-- Add Rate Form -->#}
+{#    <div class="mt-5">#}
+{#        <h2 class="mb-4 text-center">Add Your Rate</h2>#}
+{#        <form method="post" action="" class="bg-light p-4 rounded shadow-sm mx-auto" style="max-width: 600px;">#}
+{#            {% csrf_token %}#}
+{#            <div class="mb-3">#}
+{#                {{ form.rate}}#}
+{#            </div>#}
+{#            {{ form.user.as_hidden }}#}
+{#            {{ form.product.as_hidden }}#}
+{#            <div class="d-flex justify-content-center">#}
+{#                <button type="submit" class="btn btn-primary me-2">Rate</button>#}
+{#                <a href="{% url 'shop' %}" class="btn btn-secondary">Back to Shop</a>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}
+
+            <div class="container my-5">
+                <h2 class="mb-4">Add Rate</h2>
+                <form method="post" action="" class="bg-light p-4 rounded shadow-sm">
+                  {% csrf_token %}
+
+{#                    {{ form.as_p }}#}
+                  <div class="mb-3">
+                    {{ form.rate }}
+                  </div>
+{##}
+{##}
+                  {{ form.user.as_hidden }}
+                  {{ form.product.as_hidden }}
+
+                  <button type="submit" class="btn btn-primary mt-3">Rate</button>
+                  <a href="{% url 'shop' %}" class="btn btn-secondary mt-3 ms-2">Back to Shop</a>
+                </form>
+            </div>
+{% endblock %}

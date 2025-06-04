@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="shop-single.html" class="h3 text-decoration-none">{{ product.name }}</a>
+                                <a href="shop-single.html" class="h3 text-decoration-none">Name :{{ product.name }}</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                     <li>{{ product.amount }}</li>
                                     <li class="pt-2">
@@ -35,10 +35,10 @@
                                 </ul>
                                 <ul class="list-unstyled d-flex justify-content-center mb-1">
                                     <li>
-                                        <p> Score : {{ product.rate }}</p>
+{#                                        <p> Score : {{ rate }}</p>#}
                                     </li>
                                 </ul>
-                                <p class="text-center mb-0"> $ {{ product.price }}</p>
+                                <p class="text-center mb-0"> Price : $ {{ product.price }}</p>
                             </div>
                         </div>
                     </div>

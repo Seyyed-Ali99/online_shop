@@ -1,35 +1,117 @@
+{#{% extends 'index.html' %}#}
+{#{% load static %}#}
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">#}
+{#    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">#}
+{#    <link rel="stylesheet" href="{% static 'css/custom.css' %}">#}
+{#{% block title %}#}
+{#    Dashboard Vendor#}
+{#{% endblock %}#}
+{#{% block content  %}#}
+{#    <p> FIRST NAME : {{ user.first_name }}</p>#}
+{#    <p> LAST NAME : {{ user.last_name }}</p>#}
+{#    <p> EMAIL : {{ user.email }}</p>#}
+{#    <p> PHONE NUMBER : {{ user.phone_number }}</p>#}
+{#    <a href="{% url 'update_user' %}">/ update_user /</a>#}
+{#    <a href="{% url 'logout' %}">/ logout /</a>#}
+{#    <a href="{% url 'shop_orders' %}">/ our orders /</a>#}
+{#    <a href="{% url 'shop_products' %}">/ PRODUCTS /</a>#}
+{#    <a href="{% url 'staff_list' %}"> / STAFF /</a>#}
+{#    {% if user.role == 'admin' %}#}
+{#        <p> Address : {{ user.address }}</p>#}
+{#        <p> Store Name : {{ user.username }}</p>#}
+{#    {% endif %}#}
+{#    <p> Role : {{ user.role }}</p>#}
+{#    {% if user.role == 'admin' or user.role == 'manager' %}#}
+{#            {% if user.role == 'admin' %}#}
+{#                <a href="{% url 'staff_add' %}">/ Add staff /</a>#}
+{#            {% endif %}#}
+{#        <a href="{% url 'add_product' %}">/ create product /</a>#}
+{#        <a href="{% url 'edit_product' %}"> Edit Product</a>#}
+{#    {% endif %}#}
+{#    {% if user.role == 'manager' or user.role == 'operator' %}#}
+{#        <p> Store Address : {{ user.store.address }}</p>#}
+{#        <p> Store Name : {{ user.store.username }}</p>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
 {% extends 'index.html' %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
-    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-{% block title %}
-    Dashboard Vendor
-{% endblock %}
-{% block content  %}
-    <p> FIRST NAME : {{ user.first_name }}</p>
-    <p> LAST NAME : {{ user.last_name }}</p>
-    <p> EMAIL : {{ user.email }}</p>
-    <p> PHONE NUMBER : {{ user.phone_number }}</p>
-    <a href="{% url 'update_user' %}">/ update_user /</a>
-    <a href="{% url 'logout' %}">/ logout /</a>
-    <a href="{% url 'shop_orders' %}">/ our orders /</a>
-    <a href="{% url 'shop_products' %}">/ PRODUCTS /</a>
-    <a href="{% url 'staff_list' %}"> / STAFF /</a>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/templatemo.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+{% block title %}Dashboard Vendor{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card shadow-sm border-0 rounded-3 p-4">
+    <h2 class="mb-4 text-center">Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+    <div class="row mb-3">
+      <div class="col-md-6 mb-2">
+        <div class="card p-3 h-100">
+          <h5 class="card-title mb-2"><i class="fas fa-user"></i> Profile Info</h5>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+          <p><strong>Role:</strong> {{ user.role|capfirst }}</p>
+        </div>
+      </div>
+      <div class="col-md-6 mb-2">
+        <div class="card p-3 h-100">
+          <h5 class="card-title mb-2"><i class="fas fa-cog"></i> Actions</h5>
+          <a class="btn btn-primary mb-2" href="{% url 'update_user' %}"><i class="fas fa-edit"></i> Update Profile</a>
+          <a class="btn btn-danger mb-2" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          <a class="btn btn-success mb-2" href="{% url 'shop_orders' %}"><i class="fas fa-shopping-cart"></i> Your Orders</a>
+          <a class="btn btn-info mb-2" href="{% url 'shop_products' %}"><i class="fas fa-box-open"></i> Products</a>
+          <a class="btn btn-secondary mb-2" href="{% url 'staff_list' %}"><i class="fas fa-users"></i> Staff</a>
+        </div>
+      </div>
+    </div>
+
     {% if user.role == 'admin' %}
-        <p> Address : {{ user.address }}</p>
-        <p> Store Name : {{ user.username }}</p>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5 class="card-title mb-2"><i class="fas fa-address-card"></i> Address</h5>
+          <p>{{ user.address }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5 class="card-title mb-2"><i class="fas fa-store"></i> Store Name</h5>
+          <p>{{ user.username }}</p>
+        </div>
+      </div>
+    </div>
     {% endif %}
-    <p> Role : {{ user.role }}</p>
+
     {% if user.role == 'admin' or user.role == 'manager' %}
-            {% if user.role == 'admin' %}
-                <a href="{% url 'staff_add' %}">/ Add staff /</a>
-            {% endif %}
-        <a href="{% url 'add_product' %}">/ create product /</a>
-{#        <a href="{% url 'edit_product' %}"> Edit Product</a>#}
+    <div class="row mb-3">
+      {% if user.role == 'admin' %}
+      <div class="col-md-4">
+        <a class="btn btn-outline-primary btn-block" href="{% url 'staff_add' %}">
+          <i class="fas fa-plus"></i> Add Staff
+        </a>
+      </div>
+      {% endif %}
+      <div class="col-md-4">
+        <a class="btn btn-outline-success btn-block" href="{% url 'add_product' %}">
+          <i class="fas fa-plus"></i> Create Product
+        </a>
+      </div>
+    </div>
     {% endif %}
+
     {% if user.role == 'manager' or user.role == 'operator' %}
-        <p> Store Address : {{ user.store.address }}</p>
-        <p> Store Name : {{ user.store.username }}</p>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5 class="card-title mb-2"><i class="fas fa-store"></i> Store Info</h5>
+          <p><strong>Address:</strong> {{ user.store.address }}</p>
+          <p><strong>Store Name:</strong> {{ user.store.username }}</p>
+        </div>
+      </div>
+    </div>
     {% endif %}
+  </div>
+</div>
 {% endblock %}

@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password
 from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
 from accounts.models import User
-from product.models import Product,Comment
+from product.models import Product, Comment, Rate
 from .forms import UserRegisterForm, EmailLoginForm, OTPPhoneForm,StaffForm,UpdateUserForm,AdminCustomerRegisterForm,AddStaffForm
 from django.contrib.auth.views import LogoutView , LoginView
 from django.views import View
@@ -16,6 +16,7 @@ from django.contrib import messages
 from .forms import OTPPhoneForm,OTPCodeForm
 import random
 from kavenegar import *
+import math
 
 # Create your views here.
 
@@ -182,14 +183,33 @@ class StoresProducts(View):
 
 class ShopProducts(View):
     template_name = 'shop_products.html'
+    # def get(self,request,*args,**kwargs):
+    #     current_user = self.request.user
+    #     if current_user.role == "manager" or current_user.role=="operator":
+    #         product = Product.objects.filter(store=current_user.store)
+    #
     def get(self, request,*args,**kwargs):
         current_user = self.request.user
         if self.request.user.role == "manager" or self.request.user.role == "operator":
             product = Product.objects.filter(store=current_user.store)
-            return render(request,self.template_name, context={'products':product,'user':self.request.user})
+            rates = Rate.objects.filter(product__in=product)
+            sum = 0
+            avg = 1
+
+            for rate in rates:
+                sum += rate.rate
+                avg = round(sum / rates.count(),2)
+            return render(request,self.template_name, context={'products':product,'user':self.request.user,'rate':avg})
         elif self.request.user.role == "admin":
             product = Product.objects.filter(store=current_user.id)
-            return render(request,self.template_name, context={'products':product,'user':self.request.user})
+            rates = Rate.objects.filter(product__in=product)
+            sum = 0
+            avg = 1
+
+            for rate in rates:
+                sum += rate.rate
+                avg = round(sum/rates.count(),2)
+            return render(request,self.template_name, context={'products':product,'user':self.request.user,'rate_avg':avg,'rates':rates})
         else:
             return HttpResponseForbidden()
 
@@ -233,6 +253,6 @@ class AddStaff(LoginRequiredMixin,CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request  
+        kwargs['request'] = self.request
         return kwargs
 

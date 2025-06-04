@@ -36,21 +36,38 @@ class ContactUs(TemplateView):
         return render(request,self.template_name)
 
 
-class SearchHome(ListView):
+# class SearchHome(ListView):
+#     model = Product
+#     template_name = 'index.html'
+#     context_object_name = 'products'
+#
+#     def get_queryset(self):
+#         query = self.request.GET.get('q','')
+#         if query:
+#             return Product.objects.filter(name__icontains=query)
+#         else:
+#             return Product.objects.none()
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(SearchHome, self).get_context_data(**kwargs)
+#         context['query'] = self.request.GET.get('q','')
+#         return context
+
+class SearchResultsView(ListView):
     model = Product
-    template_name = 'index.html'
-    context_object_name = 'products'
+    template_name = 'shop.html'
+    context_object_name = 'results'
 
     def get_queryset(self):
-        query = self.request.GET.get('q','')
+        query = self.request.GET.get('q', '')
         if query:
             return Product.objects.filter(name__icontains=query)
         else:
             return Product.objects.none()
 
     def get_context_data(self, **kwargs):
-        context = super(SearchHome, self).get_context_data(**kwargs)
-        context['query'] = self.request.GET.get('q','')
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
         return context
 
 

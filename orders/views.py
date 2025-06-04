@@ -169,8 +169,14 @@ class OrderCreateView(View):
                 except Product.DoesNotExist:
                     continue  # ignore missing products
 
-            order.total_price = prices
-            order.save()
+
+            if order.discount > 1 :
+                discount_for_price = prices * order.discount/100
+                order.total_price = prices - discount_for_price
+                order.save()
+            else :
+                order.total_price = prices
+                order.save()
 
             del request.session['cart']
             return redirect('order_list')
@@ -201,7 +207,7 @@ class OrderDetailView(LoginRequiredMixin,View):
 
         # Calculate total price
         total_price = sum(item.product_id.price * item.amount for item in order_items)
-
+        # product = Product.objects.get(=order.product_id)
         # Update order's total_price if needed
         order.total_price = total_price
         order.save()
@@ -210,6 +216,7 @@ class OrderDetailView(LoginRequiredMixin,View):
             'order': order,
             'order_items': order_items,
             'rate': avg_rate,
+            # 'product': product,
         })
 
         # products = Product.objects.filter(id=order_items.product_id)
@@ -262,33 +269,10 @@ class OrderUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'order_update.html'
     success_url = reverse_lazy('shop_orders')
 
-# class CustomerOrders(APIView):
-#     permission_classes = [IsAuthenticated]
-#     login_url = 'email_login'
-#     def get(self, request):
-#         current_user = self.request.user
-#         orders = Order.objects.filter(order_items__customer_id=current_user.id).order_by('-id')
-#         serializer = OrderSerializer(orders, many=True)
-#         return Response(serializer.data)
 
 
 
 
-# class OrderUpdateView(LoginRequiredMixin,UpdateView):
-#     model = Order
-#     form_class = UserRegisterForm
-#     template_name = 'update_user.html'
-#     success_url = reverse_lazy('dashboard')  # Redirect to dashboard after update
-#
-#     def form_valid(self, form):
-#         messages.success(self.request, 'Item successfully updated!')
-#         return super().form_valid(form)
-
-# class OrderUpdateView(APIView):
-#     model = Order
-#     template_name = 'order_update.html'
-#     fields = ["date_of_deliver","discount","address","orderitem_id"]
-#     success_url = reverse_lazy('order_list')
 
 
 

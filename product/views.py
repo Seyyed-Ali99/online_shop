@@ -61,7 +61,7 @@ class ProductDetail(View):
             for rate in rates:
                 ratings += rate.rate
                 sum += 1
-            avg = ratings / sum
+            avg = round(ratings / sum,2)
         except:
             avg = 0
 
@@ -147,38 +147,21 @@ class CommentList(LoginRequiredMixin,View):
         context = {'comments':comments}
         return render(request,'comments_list.html',context=context)
 
-class CommentDetail(View):
-    pass
-
-# class CommentDelete(LoginRequiredMixin,View):
-#     def get(self,request):
-#         pass
-#
-#     def post(self,request):
-#         pass
 
 
-class AddRate(LoginRequiredMixin,View):
+class AddRate(LoginRequiredMixin, View):
     login_url = 'email_login'
-    def get(self,request,*args,**kwargs):
-        user = self.request.user
-        product = Product.objects.get(id=kwargs['id'])
-        rateform = RateForm(initial={'product':product,'user':user})
-        return render(request,"product_detail.html",context={"form":rateform,"product":product})
+
+    def get(self, request, *args, **kwargs):
+        # product = get_object_or_404(Product, id=kwargs['id'])
+        rate_form = RateForm(initial={'product': Product.objects.get(id=kwargs['id']), 'user': request.user})
+        return render(request, 'rate_page.html', {"form": rate_form})
 
     def post(self,request,*args,**kwargs):
-        product = Product.objects.get(id=kwargs['id'])
-        related_order = Order.objects.filter(customer_id=request.user)
-        order_product = OrderItem.objects.get(product=product,order=related_order,is_paid=True)
-
-
-        if order_product :
-            rateform = RateForm(request.POST,initial={'product':product,'user':request.user})
-            if rateform.is_valid():
-                rateform.save()
-                return redirect('order_detail')
-            else:
-                return HttpResponseBadRequest(reverse_lazy('product_detail', product.id))
-        else:
-            # return redirect('product_detail', product.id)
-            return render(request,'product_detail.html',{'message':"You haven't ordered this Product yet "})
+        # product = get_object_or_404(Product, id=kwargs['id'])
+        form = RateForm(request.POST,initial={'product':Product.objects.get(id=kwargs['id']),'user': request.user})
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail', Product.objects.get(id=kwargs['id']).id)
+        else :
+            return redirect('order_list')

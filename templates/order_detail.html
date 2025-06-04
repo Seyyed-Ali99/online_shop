@@ -23,7 +23,9 @@
                 <ul class="list-unstyled mb-3">
                     <li><strong>Category:</strong> {{ order_item.product_id.category }}</li>
                     <li><strong>Amount:</strong> {{ order_item.amount }}</li>
-                    <li><strong>Store:</strong> {{ order_item.product_id.store.username }}</li>
+{#                    <li><strong>Store:</strong> {{ order_item.product_id.store.username }}</li>#}
+                    <li><a href="{% url 'add_rate' order_item.product_id.id %}"> Rate </a></li>
+
                 </ul>
                 {% if order_item.product_id.rates != 0 %}
                 <div class="mb-2">
@@ -53,9 +55,13 @@
         <li class="list-group-item d-flex justify-content-between">
             <strong>Address:</strong> {{ order.address }}
         </li>
+        <li class="list-group-item d-flex justify-content-between">
+            <strong>Discount:</strong> {{ order.discount }}
+        </li>
         <li class="list-group-item d-flex justify-content-between fw-bold fs-5 bg-light">
             <span>Total Price:</span> <span>${{ order.total_price }}</span>
         </li>
+
     </ul>
     {# Uncomment if payment or comment sections are needed #}
 

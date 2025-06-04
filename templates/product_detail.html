@@ -2,23 +2,16 @@
 {% extends 'shop.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Product_detail{% endblock %}</title>
-    <!-- Include Font Awesome for icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Add your CSS here -->
-</head>
-<body>
-    {% block content %}
+{% block title %}Product Detail{% endblock %}
+
+{% block content %}
+<div class="container py-5">
     <div class="row">
         <!-- Product Card -->
-        <div class="col-md-4">
-            <div class="card mb-4 product-wap rounded-0">
-                <div class="card rounded-0">
-                    <img class="card-img rounded-0 img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+        <div class="col-md-4 mb-4">
+            <div class="card product-wap rounded-0 shadow-sm hover-shadow">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top rounded-0 img-fluid" alt="{{ product.name }}">
                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                         <ul class="list-unstyled">
                             <li>
@@ -30,63 +23,45 @@
                         </ul>
                     </div>
                 </div>
-                <div class="card-body">
-                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                        <li>{{ product.name }}</li>
-                        <li class="pt-2">
-                            <span> {{ product.category }} </span>
-                            <span> {{ product.amount }} </span>
-
-                            <span> {{ product.store.username }} </span>
-
-                           <p>  {{ product.date_of_product }} </p>
-                            <a href="{% url 'add_comment' id=product.id %}" class="btn-outline-primary">Comment</a>
-                        </li>
+                <div class="card-body text-center">
+                    <h4 class="card-title mb-2">{{ product.name }}</h4>
+                    <ul class="list-unstyled mb-3">
+                        <li><strong>Category:</strong> {{ product.category }}</li>
+                        <li><strong>Amount:</strong> {{ product.amount }}</li>
+                        <li><strong>Store:</strong> {{ product.store.username }}</li>
+                        <li><strong>Date of Product:</strong> {{ product.date_of_product }}</li>
                     </ul>
-                    <ul class="list-unstyled d-flex justify-content-center mb-1">
-                        {% if not product.rate == 0 %}
-                            <li><i>Score: {{ rates }}</i></li>
-                        {% endif %}
-                    </ul>
-                    <p class="text-center mb-0"> $ {{ product.price }}</p>
+                    {% if not product.rate == 0 %}
+                        <div class="mb-3">
+                            <span class="badge bg-warning text-dark">Score: {{ rates }}</span>
+                        </div>
+                    {% endif %}
+                    <h5 class="text-primary mb-0">${{ product.price }}</h5>
+                    <a href="{% url 'add_comment' id=product.id %}" class="btn btn-outline-primary btn-sm mt-3">Comment</a>
                 </div>
             </div>
         </div>
 
         <!-- Comments Section -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-4">
+            <h3 class="mb-4">Comments</h3>
             {% for comment in comments %}
-            <div class="card mb-4 product-wap rounded-0">
-                <div class="card rounded-0">
-                    <h2> Title : {{ comment.title }}</h2>
-                    <div class="card-body">
-                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                            <li> User : {{ comment.user }}</li>
-                        </ul>
-                        <p> Comment : {{ comment.comment_body }}</p>
-                    </div>
+            <div class="card mb-3 shadow-sm rounded-0">
+                <div class="card-body">
+                    <h5 class="card-title">Title: {{ comment.title }}</h5>
+                    <p class="mb-2"><strong>User:</strong> {{ comment.user }}</p>
+                    <p><strong>Comment:</strong> {{ comment.comment_body }}</p>
                 </div>
             </div>
+            {% empty %}
+            <p class="text-muted">No comments yet.</p>
             {% endfor %}
         </div>
-        <div class="container my-5">
-                <h2 class="mb-4">Add your rate </h2>
-                <form method="post" action="" class="bg-light p-4 rounded shadow-sm">
-                    {% csrf_token %}
-
-                    <div class="mb-3">
-                      {{ form.rate }}
-
-                    </div>
-
-                    {{ form.user.as_hidden }}
-                    {{ form.product.as_hidden }}
-
-                    <button type="submit" class="btn btn-primary mt-3"> Rate </button>
-                    <a href="{% url 'shop' %}" class="btn btn-secondary mt-3 ms-2">Back to Shop</a>
-                </form>
-        </div>
     </div>
+
+
+</div>
+
 
     <!-- jQuery for AJAX -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
