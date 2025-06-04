@@ -104,7 +104,7 @@ class RegisterView(CreateView):
     model = User
     form_class = AdminCustomerRegisterForm
     template_name = 'register.html'
-    success_url = reverse_lazy('email_login')
+    success_url = reverse_lazy('dashboard_user')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
