@@ -2,9 +2,12 @@ from tkinter import Listbox
 
 from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView
 from product.models import Product
+from django.db.models import Q
+
 
 # Create your views here.
 
@@ -35,41 +38,15 @@ class ContactUs(TemplateView):
     def get(self,request,*args,**kwargs):
         return render(request,self.template_name)
 
-
-# class SearchHome(ListView):
-#     model = Product
-#     template_name = 'index.html'
-#     context_object_name = 'products'
-#
-#     def get_queryset(self):
-#         query = self.request.GET.get('q','')
-#         if query:
-#             return Product.objects.filter(name__icontains=query)
-#         else:
-#             return Product.objects.none()
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(SearchHome, self).get_context_data(**kwargs)
-#         context['query'] = self.request.GET.get('q','')
-#         return context
-
-class SearchResultsView(ListView):
+class SearchView(ListView):
     model = Product
-    template_name = 'shop.html'
-    context_object_name = 'results'
+    template_name = 'shop-single.html'
+    context_object_name = 'products'
 
     def get_queryset(self):
-        query = self.request.GET.get('q', '')
+        query = self.request.GET.get('q')
         if query:
-            return Product.objects.filter(name__icontains=query)
-        else:
-            return Product.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query'] = self.request.GET.get('q', '')
-        return context
-
-
+            return Product.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
+        return Product.objects.none()
 
 

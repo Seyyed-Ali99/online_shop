@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'website',
     'admin_panel',
     'product',
+    "django.contrib.postgres"
     # 'django.contrib.foo'
 ]
 
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
