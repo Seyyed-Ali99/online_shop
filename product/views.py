@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect
 from unicodedata import category
 
 from orders.models import Order, OrderItem
-from .forms import CategoryForm , ProductForm , CommentForm,RateForm
+from .forms import CategoryForm , ProductForm , CommentForm,RateForm,ProductUpdateForm
 from .models import Category , Product , Comment,Rate
 from django.http import HttpResponse , HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
@@ -32,7 +32,7 @@ class AddProduct(LoginRequiredMixin,View):
             form.save()
             return redirect('shop')
         else :
-            return HttpResponseBadRequest()
+            return redirect('dashboard_user')
 
 # class AddProduct(LoginRequiredMixin,CreateView):
 #     login_url = reverse_lazy('login')
@@ -40,7 +40,6 @@ class AddProduct(LoginRequiredMixin,View):
 #     form_class = ProductForm
 #     template_name = 'add_product.html'
 #     success_url = reverse_lazy('shop')
-#     queryset = ProductForm(initial={'store':self.request.user})
 
 
 
@@ -91,7 +90,7 @@ class ProductDelete(LoginRequiredMixin,View):
 class ProductUpdate(LoginRequiredMixin,UpdateView):
     login_url = 'email_login'
     model = Product 
-    form_class = ProductForm
+    form_class = ProductUpdateForm
     template_name = 'update_product.html'  
     success_url = reverse_lazy('shop_products')
 

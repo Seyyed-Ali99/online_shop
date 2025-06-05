@@ -1,27 +1,103 @@
+{#{% extends 'shop.html' %}#}
+{#{% load static %}#}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>#}
+{#        {% block title %}#}
+{#            Product Create#}
+{#        {% endblock %}#}
+{#    </title>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#        {% block content %}#}
+{#            <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                {{ form.name }}#}
+{#                {{ form.image }}#}
+{#                {{ form.category }}#}
+{#                {{ form.price }}#}
+{#                {{ form.amount }}#}
+{##}
+{#                <div style="display:none;">#}
+{#                     {{ form.store }}#}
+{#                </div>#}
+{#                <button type="submit"> Create </button>#}
+{#            </form>#}
+{#        {% endblock %}#}
+{##}
+{#</body>#}
+{#</html>#}
 {% extends 'shop.html' %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>
-        {% block title %}
-            Product Create
-        {% endblock %}
+        {% block title %}Product Create{% endblock %}
     </title>
 </head>
-<body>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
 
-        {% block content %}
-            <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-{#                {{ form.store.as_hidden}}#}
-                <button type="submit"> Create </button>
-            </form>
-        {% endblock %}
+    <h2 style="text-align: center; margin-bottom: 20px;">Create a New Product</h2>
+
+    {% block content %}
+    <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+
+        {% csrf_token %}
+
+        <div style="margin-bottom: 15px;">
+            {{ form.name.label_tag }}<br>
+            {{ form.name }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.image.label_tag }}<br>
+            {{ form.image }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.category.label_tag }}<br>
+            {{ form.category }}
+        </div>
+
+{#        <div style="margin-bottom: 15px;">#}
+{#            {{ form.date_of_product.label_tag }}<br>#}
+{#            {{ form.date_of_product }}#}
+{#        </div>#}
+        <div class="mb-3">
+                <label  class="form-label fw-semibold">Product Date:</label>
+                <input type="date" name="{{ form.date_of_product.html_name }}" id="{{ form.date_of_product.id_for_label }}" value="YYYY-MM-DD">
+                {{ form.date_of_product }}
+        </div>
+
+
+        <div style="margin-bottom: 15px;">
+            {{ form.price.label_tag }}<br>
+            {{ form.price }}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            {{ form.amount.label_tag }}<br>
+            {{ form.amount }}
+        </div>
+
+        <div style="display:none;">
+            {{ form.store }}
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" style="padding: 10px 20px; border: none; background-color: #007bff; color: white; border-radius: 4px; cursor: pointer;">
+                Create
+            </button>
+        </div>
+    </form>
+    {% endblock %}
 
 </body>
 </html>
-
