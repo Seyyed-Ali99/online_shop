@@ -1,5 +1,5 @@
 # from django.contrib.auth.handlers.modwsgi import check_password
-import decouple
+
 from django.contrib.auth.hashers import check_password
 from django.shortcuts import render,redirect
 from django.http import HttpResponse , HttpResponseBadRequest,HttpResponseForbidden
@@ -17,6 +17,7 @@ from .forms import OTPPhoneForm,OTPCodeForm
 import random
 from kavenegar import *
 import math
+import decouple
 
 # Create your views here.
 
@@ -57,7 +58,7 @@ class OTPLogin(FormView):
         otp = str(random.randint(1000,9999))
         self.request.session['otp'] = otp
         self.request.session['phone'] = phone
-
+        # api = decouple.config('API_KEY')
         api = KavenegarAPI('31575A4F464F494D76616C6F70634A4968636E76683561502F567746777272784132755279435957514A413D')
         try :
             params = {

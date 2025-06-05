@@ -17,9 +17,11 @@
             <form method="post" action="{% url 'add_product' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
+{#                {{ form.store.as_hidden}}#}
                 <button type="submit"> Create </button>
             </form>
         {% endblock %}
 
 </body>
 </html>
+

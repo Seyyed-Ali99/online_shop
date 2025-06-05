@@ -1,41 +1,57 @@
-{#{% extends 'about.html' %}#}
-{#{% load static %}#}
-{##}
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>#}
-{#        {% block title %}#}
-{#            Product Update#}
-{#        {% endblock %}#}
-{#    </title>#}
-{#</head>#}
-{#<body>#}
-{#<form action="{% url 'edit_product' %}">#}
-{#        {% block content %}#}
-{#            {% csrf_token %}#}
-{#            {{ form.as_p }}#}
-{#            <button type="submit"> Edit </button>#}
-{#        {% endblock %}#}
-{#</form>#}
-{#</body>#}
-{#</html>#}
+
 {% extends 'index.html' %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %} ">
-    <link rel="stylesheet" href="{% static 'css/templatemo.css ' %} ">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-{% block title %}
-    Edit Product
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/templatemo.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 {% endblock %}
-{% block content  %}
-    <form method="post" action="update_product.html">
 
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit"> Update </button>
-        <button type="submit"><a href="{% url 'shop_products' %}" style="color: #191c1f"> Back to products list </a></button>
-    </form>
+{% block title %}Edit Product{% endblock %}
 
+{% block content %}
+<div class="d-flex align-items-center vh-100 bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm rounded-3 p-4 bg-white">
+          <h2 class="text-center mb-4 fw-semibold text-primary">Edit Product</h2>
+          <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_name" class="form-label fw-semibold">Name:</label>
+              {{ form.name }}
+            </div>
+            <div class="mb-3">
+              <label for="id_image" class="form-label fw-semibold">Image:</label>
+              {{ form.image }}
+            </div>
+              <div class="mb-3">
+                <label  class="form-label fw-semibold">Product Date:</label>
+                <input type="date" name="{{ form.date_of_product.html_name }}" id="{{ form.date_of_product.id_for_label }}" value="YYYY-MM-DD">
+                {{ form.date_of_product }}
+              </div>
+            <div class="mb-3">
+              <label for="id_category" class="form-label fw-semibold">Category:</label>
+              {{ form.category }}
+            </div>
+            <div class="mb-3">
+              <label for="id_amount" class="form-label fw-semibold">Amount:</label>
+              {{ form.amount }}
+            </div>
+            <div class="mb-3">
+              <label for="id_price" class="form-label fw-semibold">Price:</label>
+              {{ form.price }}
+            </div>
+            {{ form.store.as_hidden }}
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 rounded-pill shadow-sm">Update</button>
+              <a href="{% url 'shop' %}" class="btn btn-secondary fw-semibold py-2 px-4 rounded-pill shadow-sm" style="text-decoration: none; color: #191c1f;">Back to products list</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

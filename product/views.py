@@ -14,24 +14,35 @@ from django.contrib import messages
 
 class AddProduct(LoginRequiredMixin,View):
     login_url = 'email_login'
-    def get(self,request):
-        form = ProductForm()
+    def get(self,request,*args,**kwargs):
+
+        if request.user.role == 'admin':
+            form = ProductForm(initial={'store':request.user})
+        else:
+            form = ProductForm(initial={'store':request.user.store})
         return render(request,"add_product.html",{"form":form})
 
     def post(self,request):
-        form = ProductForm(request.POST,request.FILES)
+
+        if request.user.role == 'admin':
+            form = ProductForm(request.POST,request.FILES,initial={'store':request.user.id})
+        else :
+            form = ProductForm(request.POST,request.FILES,initial={'store':request.user.store})
         if form.is_valid():
             form.save()
             return redirect('shop')
         else :
             return HttpResponseBadRequest()
 
-# class AllComment(LoginRequiredMixin,View):
-#     login_url = 'login'
-#     def get(self,request):
-#         product = Product.objects.get(store=request.user.id)
-#         comments = Comment.objects.filter(product=product)
-#         return render(request,"stores_comments.html",context={"comments":comments})
+# class AddProduct(LoginRequiredMixin,CreateView):
+#     login_url = reverse_lazy('login')
+#     model = Product
+#     form_class = ProductForm
+#     template_name = 'add_product.html'
+#     success_url = reverse_lazy('shop')
+#     queryset = ProductForm(initial={'store':self.request.user})
+
+
 
 class ProductList(View):
     

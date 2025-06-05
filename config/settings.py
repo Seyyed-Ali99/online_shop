@@ -165,3 +165,7 @@ LOGOUT_REDIRECT_URL='home'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_TIMEZONE = 'UTC'
+
+# from decouple import config
+#
+# debug = config('DEBUG', default=False, cast=bool)
