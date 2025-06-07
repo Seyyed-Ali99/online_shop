@@ -18,6 +18,7 @@ import random
 from kavenegar import *
 import math
 import decouple
+from django.db.models import Avg , Sum
 
 # Create your views here.
 
@@ -161,7 +162,15 @@ class CustomLogoutView(LoginRequiredMixin,View):
 class StoresList(View):
     template_name = 'stores_list.html'
     def get(self, request):
-        stores = User.objects.filter(role="admin")
+        all_stores = User.objects.filter(role="admin")
+        stores = None
+        filter_store = request.GET.get('filter_store')
+        if filter_store == 'cheapest':
+            stores = all_stores.annotate(avg_price=Avg('Product__price')).filter(avg_price__lt=1000.00)
+        elif filter_store == 'expensive':
+            stores = all_stores.annotate(avg_price=Avg('Product__price')).filter(avg_price__gt=1000.00)
+        else:
+            stores = all_stores
         context = {"stores":stores}
         return render(request,self.template_name, context=context)
 
